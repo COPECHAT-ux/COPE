@@ -14,71 +14,62 @@
             -webkit-tap-highlight-color: transparent;
         }
         body {
-            background: #F5F9F8;
+            background: #F8FAF9;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 20px;
+            padding: 16px;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .app {
-            max-width: 420px;
+            max-width: 400px;
             width: 100%;
             margin: 0 auto;
         }
-        
-        /* Карточка */
         .card {
             background: white;
             border-radius: 48px;
-            padding: 28px 24px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+            padding: 32px 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
             text-align: center;
         }
-        
-        /* Лого */
-        .logo-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #1E5A48, #2E8B6F);
+        .logo {
+            width: 72px;
+            height: 72px;
+            background: #2E8B6F;
             border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
         }
-        .logo-icon svg {
+        .logo svg {
             width: 40px;
             height: 40px;
             stroke: white;
         }
-        .logo-text {
-            font-size: 28px;
+        h1 {
+            font-size: 32px;
             font-weight: 800;
-            background: linear-gradient(135deg, #1E5A48, #2E8B6F);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: #1E4A3A;
             letter-spacing: -0.5px;
         }
-        .subtitle {
+        .sub {
             font-size: 12px;
-            color: #8BA9A2;
+            color: #8BA5A0;
             letter-spacing: 1px;
             margin-top: 4px;
         }
         .divider {
             width: 50px;
             height: 2px;
-            background: #E2EFEC;
+            background: #E2EFEA;
             margin: 20px auto;
         }
-        
-        /* Поддержка */
-        .support-row {
-            background: #F5F9F8;
-            border-radius: 30px;
+        .support {
+            background: #F5F9F7;
+            border-radius: 28px;
             padding: 12px 16px;
             display: flex;
             align-items: center;
@@ -93,7 +84,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
         .support-icon svg {
             width: 22px;
@@ -106,15 +96,12 @@
         .support-text h4 {
             font-size: 14px;
             font-weight: 700;
-            color: #1E3A32;
+            color: #1E4A3A;
         }
         .support-text p {
             font-size: 11px;
-            color: #8BA9A2;
-            margin-top: 2px;
+            color: #8BA5A0;
         }
-        
-        /* Кнопки */
         .btn {
             width: 100%;
             padding: 16px 20px;
@@ -127,29 +114,26 @@
             justify-content: center;
             gap: 10px;
             cursor: pointer;
-            transition: transform 0.1s ease;
             font-family: inherit;
+            transition: all 0.1s ease;
         }
-        .btn:active { transform: scale(0.97); }
+        .btn:active {
+            transform: scale(0.97);
+        }
         .btn-primary {
             background: #2E8B6F;
             color: white;
-            box-shadow: 0 6px 14px rgba(46, 139, 111, 0.25);
+            box-shadow: 0 4px 12px rgba(46,139,111,0.3);
         }
         .btn-secondary {
             background: #F0F5F3;
             color: #2E8B6F;
-            border: 1px solid #D4E5E0;
+            border: 1px solid #D4E5DF;
         }
         .btn-outline {
             background: white;
             color: #2E8B6F;
-            border: 1px solid #D4E5E0;
-        }
-        .btn-icon svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
+            border: 1px solid #D4E5DF;
         }
         .btn-group {
             display: flex;
@@ -160,7 +144,6 @@
         .footer {
             font-size: 10px;
             color: #B8CFC8;
-            margin-top: 20px;
         }
         
         /* Экраны */
@@ -174,13 +157,10 @@
             z-index: 1000;
             overflow-y: auto;
             padding: 24px 20px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
+            display: none;
         }
         .screen.active {
-            opacity: 1;
-            visibility: visible;
+            display: block;
         }
         .screen-header {
             display: flex;
@@ -191,7 +171,7 @@
         .screen-header h2 {
             font-size: 24px;
             font-weight: 700;
-            color: #1E3A32;
+            color: #1E4A3A;
         }
         .close-btn {
             width: 40px;
@@ -213,12 +193,10 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #8BA9A2;
+            color: #8BA5A0;
             margin-bottom: 12px;
             text-align: left;
         }
-        
-        /* Тарифы */
         .tariff-list {
             display: flex;
             flex-direction: column;
@@ -226,69 +204,61 @@
             margin-bottom: 24px;
         }
         .tariff-item {
-            background: #F5F9F8;
-            border: 1px solid #E2EFEC;
+            background: #F5F9F7;
+            border: 1px solid #E2EFEA;
             border-radius: 20px;
             padding: 14px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: all 0.2s;
         }
         .tariff-item.selected {
             border-color: #2E8B6F;
-            background: #EFF7F4;
-            box-shadow: 0 2px 8px rgba(46,139,111,0.1);
+            background: #EBF4F1;
         }
         .tariff-name {
             font-weight: 700;
-            color: #1E3A32;
-            margin-bottom: 4px;
+            color: #1E4A3A;
         }
         .tariff-desc {
             font-size: 11px;
-            color: #8BA9A2;
+            color: #8BA5A0;
+            margin-top: 4px;
         }
         .tariff-price {
             font-weight: 800;
             color: #2E8B6F;
             font-size: 18px;
         }
-        
-        /* Инфо карточка */
         .info-card {
-            background: #F5F9F8;
-            border: 1px solid #E2EFEC;
+            background: #F5F9F7;
+            border: 1px solid #E2EFEA;
             border-radius: 20px;
             padding: 14px 18px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 20px;
         }
         .info-label {
-            font-size: 14px;
             font-weight: 500;
-            color: #1E3A32;
+            color: #1E4A3A;
         }
         .info-value {
-            background: #E2EFEC;
-            padding: 5px 14px;
+            background: #E2EFEA;
+            padding: 4px 14px;
             border-radius: 30px;
             font-size: 13px;
             font-weight: 600;
             color: #2E8B6F;
         }
-        
-        /* Инпут */
         .input-field {
             width: 100%;
             padding: 14px 18px;
-            border: 1px solid #E2EFEC;
+            border: 1px solid #E2EFEA;
             border-radius: 20px;
             font-size: 15px;
-            background: #F5F9F8;
+            background: #F5F9F7;
             margin-bottom: 20px;
             outline: none;
             font-family: inherit;
@@ -296,10 +266,8 @@
         .input-field:focus {
             border-color: #2E8B6F;
         }
-        
-        /* Блок суммы */
         .total-box {
-            background: #F5F9F8;
+            background: #F5F9F7;
             border-radius: 20px;
             padding: 16px;
             margin-bottom: 20px;
@@ -311,13 +279,11 @@
             font-size: 14px;
         }
         .total-row.border-top {
-            border-top: 1px solid #E2EFEC;
+            border-top: 1px solid #E2EFEA;
             padding-top: 10px;
-            margin-top: 5px;
+            margin-top: 6px;
             font-weight: 700;
         }
-        
-        /* Платеж */
         .payment-amount {
             font-size: 36px;
             font-weight: 800;
@@ -326,7 +292,7 @@
             margin: 20px 0;
         }
         .payment-details {
-            background: #F5F9F8;
+            background: #F5F9F7;
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 24px;
@@ -335,13 +301,11 @@
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1px solid #E2EFEC;
+            border-bottom: 1px solid #E2EFEA;
         }
         .payment-row:last-child {
             border-bottom: none;
         }
-        
-        /* Модалка */
         .modal {
             position: fixed;
             top: 0;
@@ -349,18 +313,14 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
             z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s;
+            display: none;
         }
         .modal.active {
-            opacity: 1;
-            visibility: visible;
+            display: flex;
         }
         .modal-content {
             background: white;
@@ -372,7 +332,7 @@
         .spinner {
             width: 48px;
             height: 48px;
-            border: 3px solid #E2EFEC;
+            border: 3px solid #E2EFEA;
             border-top-color: #2E8B6F;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -381,30 +341,19 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .check {
-            width: 56px;
-            height: 56px;
-            background: #2E8B6F;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
         .qr-img {
             max-width: 180px;
-            width: 100%;
             margin: 16px auto;
             display: block;
             border-radius: 20px;
-            border: 2px solid #E2EFEC;
+            border: 2px solid #E2EFEA;
         }
         .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1E3A32;
+            background: #1E4A3A;
             color: white;
             padding: 12px 24px;
             border-radius: 60px;
@@ -415,23 +364,25 @@
             z-index: 3000;
             white-space: nowrap;
         }
-        .toast.show { opacity: 1; }
+        .toast.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
 <div class="app">
     <div class="card">
-        <div class="logo-icon">
+        <div class="logo">
             <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                <circle cx="12" cy="12" r="3"/>
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4l3 3"/>
             </svg>
         </div>
-        <div class="logo-text">FS</div>
-        <div class="subtitle">FAITH SERVICE</div>
+        <h1>FS</h1>
+        <div class="sub">FAITH SERVICE</div>
         <div class="divider"></div>
         
-        <div class="support-row">
+        <div class="support">
             <div class="support-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <circle cx="12" cy="12" r="10"/>
@@ -445,18 +396,9 @@
         </div>
         
         <div class="btn-group">
-            <button class="btn btn-primary" id="openOrderBtn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 3L3 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5l-2-2H5z"/><path d="M3 5h18"/><path d="M16 9a4 4 0 0 1-8 0"/></svg>
-                Приобрести eSIM
-            </button>
-            <a href="https://t.me/+K9MIqYiEfcI3ZDQy" target="_blank" class="btn btn-secondary" style="text-decoration: none;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                Группа сервиса
-            </a>
-            <button class="btn btn-outline" id="shareBtn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-                Поделиться
-            </button>
+            <button class="btn btn-primary" id="openOrderBtn">📱 Приобрести eSIM</button>
+            <a href="https://t.me/+K9MIqYiEfcI3ZDQy" target="_blank" class="btn btn-secondary" style="text-decoration: none;">💬 Группа сервиса</a>
+            <button class="btn btn-outline" id="shareBtn">🔗 Поделиться</button>
         </div>
         <div class="footer">Продажа eSIM для GSM линий</div>
     </div>
@@ -484,7 +426,7 @@
         <div class="total-row"><span>Активация</span><span>200 ₽</span></div>
         <div class="total-row border-top"><span>ИТОГО</span><span id="totalVal">300 ₽</span></div>
     </div>
-    <button class="btn btn-primary" id="continueToPayBtn">Продолжить</button>
+    <button class="btn btn-primary" id="continueBtn">Продолжить</button>
 </div>
 
 <!-- Экран оплаты -->
@@ -496,64 +438,62 @@
         <div class="payment-row"><span>Получатель</span><span>Иван Иванов</span></div>
         <div class="payment-row"><span>Банк</span><span>Т-Банк</span></div>
     </div>
-    <button class="btn btn-primary" id="confirmPayBtn">Я оплатил</button>
+    <button class="btn btn-primary" id="payBtn">Я оплатил</button>
 </div>
 
-<!-- Экран результата -->
+<!-- Экран успеха -->
 <div id="successScreen" class="screen">
     <div class="screen-header"><h2>Ваш eSIM</h2><div class="close-btn" id="closeSuccessBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
-    <div id="loadingEsim" style="text-align:center; padding: 40px;"><div class="spinner"></div><p style="margin-top:16px; color:#8BA9A2;">Ожидание eSIM...</p></div>
-    <div id="esimReady" style="display:none; text-align:center;">
+    <div id="loadingDiv" style="text-align:center; padding: 40px;"><div class="spinner"></div><p style="margin-top:16px;">Ожидание eSIM...</p></div>
+    <div id="readyDiv" style="display:none; text-align:center;">
         <img id="qrImg" class="qr-img">
-        <div class="total-box" style="margin-top:16px;"><div class="total-row"><span>Номер eSIM</span><span id="phoneNum" style="color:#2E8B6F; font-weight:700;"></span></div></div>
-        <button class="btn btn-outline" id="refreshEsimBtn" style="margin-top:12px;">Обновить</button>
+        <div class="total-box" style="margin-top:16px;"><div class="total-row"><span>Номер eSIM</span><span id="phoneSpan" style="color:#2E8B6F; font-weight:700;"></span></div></div>
+        <button class="btn btn-outline" id="refreshBtn" style="margin-top:12px;">Обновить</button>
     </div>
 </div>
 
-<!-- Модалка ожидания -->
-<div id="waitModal" class="modal">
+<!-- Модалка -->
+<div id="modal" class="modal">
     <div class="modal-content">
         <div class="spinner"></div>
         <p>Ожидание подтверждения оплаты...</p>
     </div>
 </div>
 
-<div id="toastMsg" class="toast"></div>
+<div id="toast" class="toast"></div>
 
 <script>
-    // ========== SUPABASE ==========
+    // SUPABASE
     const supabaseUrl = 'https://domtiusbwjbxbfkygwvx.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvbXRpdXNid2pieGJma3lnd3Z4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTAxMjgsImV4cCI6MjA5MDUyNjEyOH0.GlYbpkx1tWUqJ2kwrOHFH5f7EaklBcuXHz8W0U-YGWg';
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
     
-    // ========== ПЕРЕМЕННЫЕ ==========
     let currentOrderId = null;
     let currentTariff = { price: 100, name: 'Минимум', gb: '1', min: '0' };
-    let pollInterval = null;
+    let interval = null;
     
     function showToast(msg) {
-        const toast = document.getElementById('toastMsg');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2000);
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2000);
     }
     
-    function generateOrderNumber() {
+    function genOrderNumber() {
         return 'FS' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2,6).toUpperCase();
     }
     
     function calcTotal(price) {
-        let subtotal = price + 200;
-        return Math.ceil(subtotal * 1.09);
+        return Math.ceil((price + 200) * 1.09);
     }
     
-    // ========== СОЗДАНИЕ ЗАКАЗА ==========
+    // Создать заказ
     async function createOrder(email) {
         const total = calcTotal(currentTariff.price);
         const { data, error } = await supabase
             .from('orders')
             .insert([{
-                order_number: generateOrderNumber(),
+                order_number: genOrderNumber(),
                 tariff_name: currentTariff.name,
                 tariff_gb: currentTariff.gb,
                 tariff_minutes: currentTariff.min,
@@ -568,84 +508,81 @@
         
         if (error) {
             console.error(error);
-            showToast('Ошибка создания заказа');
+            showToast('Ошибка: ' + error.message);
             return null;
         }
         return data;
     }
     
-    // ========== ПОЛУЧИТЬ ЗАКАЗ ==========
+    // Получить заказ
     async function getOrder(id) {
-        const { data, error } = await supabase
-            .from('orders')
-            .select('*')
-            .eq('id', id)
-            .single();
+        const { data, error } = await supabase.from('orders').select('*').eq('id', id).single();
         if (error) return null;
         return data;
     }
     
-    // ========== ОБНОВИТЬ СТАТУС ==========
+    // Обновить статус
     async function updateStatus(id, status) {
-        await supabase
-            .from('orders')
-            .update({ status: status, updated_at: new Date() })
-            .eq('id', id);
+        await supabase.from('orders').update({ status: status, updated_at: new Date() }).eq('id', id);
     }
     
-    // ========== ПОЛЛИНГ ОПЛАТЫ ==========
-    function startPaymentPolling(orderId) {
-        if (pollInterval) clearInterval(pollInterval);
-        pollInterval = setInterval(async () => {
+    // Проверка оплаты
+    function waitForPayment(orderId) {
+        if (interval) clearInterval(interval);
+        interval = setInterval(async () => {
             const order = await getOrder(orderId);
             if (order && order.status === 'paid') {
-                clearInterval(pollInterval);
-                document.getElementById('waitModal').classList.remove('active');
+                clearInterval(interval);
+                document.getElementById('modal').classList.remove('active');
                 showToast('✅ Оплата подтверждена!');
-                startEsimPolling(orderId);
+                waitForEsim(orderId);
             }
         }, 3000);
     }
     
-    // ========== ПОЛЛИНГ eSIM ==========
-    function startEsimPolling(orderId) {
-        if (pollInterval) clearInterval(pollInterval);
-        pollInterval = setInterval(async () => {
+    // Проверка eSIM
+    function waitForEsim(orderId) {
+        if (interval) clearInterval(interval);
+        interval = setInterval(async () => {
             const order = await getOrder(orderId);
             if (order && order.status === 'completed' && order.qr_code && order.esim_phone) {
-                clearInterval(pollInterval);
-                document.getElementById('loadingEsim').style.display = 'none';
-                document.getElementById('esimReady').style.display = 'block';
+                clearInterval(interval);
+                document.getElementById('loadingDiv').style.display = 'none';
+                document.getElementById('readyDiv').style.display = 'block';
                 document.getElementById('qrImg').src = order.qr_code;
-                document.getElementById('phoneNum').textContent = order.esim_phone;
+                document.getElementById('phoneSpan').textContent = order.esim_phone;
                 document.getElementById('successScreen').classList.add('active');
             }
         }, 3000);
     }
     
-    // ========== UI ОБРАБОТЧИКИ ==========
+    // ========== КНОПКИ ==========
     document.getElementById('openOrderBtn').onclick = () => {
         document.getElementById('orderScreen').classList.add('active');
     };
+    
     document.getElementById('closeOrderBtn').onclick = () => {
         document.getElementById('orderScreen').classList.remove('active');
     };
+    
     document.getElementById('closePayBtn').onclick = () => {
         document.getElementById('paymentScreen').classList.remove('active');
     };
+    
     document.getElementById('closeSuccessBtn').onclick = () => {
         document.getElementById('successScreen').classList.remove('active');
-        document.getElementById('loadingEsim').style.display = 'block';
-        document.getElementById('esimReady').style.display = 'none';
+        document.getElementById('loadingDiv').style.display = 'block';
+        document.getElementById('readyDiv').style.display = 'none';
     };
-    document.getElementById('refreshEsimBtn').onclick = async () => {
+    
+    document.getElementById('refreshBtn').onclick = async () => {
         if (currentOrderId) {
             const order = await getOrder(currentOrderId);
             if (order && order.qr_code) {
                 document.getElementById('qrImg').src = order.qr_code;
-                document.getElementById('phoneNum').textContent = order.esim_phone;
-                document.getElementById('loadingEsim').style.display = 'none';
-                document.getElementById('esimReady').style.display = 'block';
+                document.getElementById('phoneSpan').textContent = order.esim_phone;
+                document.getElementById('loadingDiv').style.display = 'none';
+                document.getElementById('readyDiv').style.display = 'block';
             } else {
                 showToast('eSIM еще не готов');
             }
@@ -670,10 +607,10 @@
     document.querySelector('.tariff-item').classList.add('selected');
     
     // Продолжить
-    document.getElementById('continueToPayBtn').onclick = async () => {
+    document.getElementById('continueBtn').onclick = async () => {
         const email = document.getElementById('emailInput').value.trim();
         if (!email || !email.includes('@')) {
-            showToast('Введите корректный email');
+            showToast('Введите email');
             return;
         }
         
@@ -687,12 +624,12 @@
     };
     
     // Я оплатил
-    document.getElementById('confirmPayBtn').onclick = async () => {
+    document.getElementById('payBtn').onclick = async () => {
         if (!currentOrderId) return;
         await updateStatus(currentOrderId, 'pending');
         document.getElementById('paymentScreen').classList.remove('active');
-        document.getElementById('waitModal').classList.add('active');
-        startPaymentPolling(currentOrderId);
+        document.getElementById('modal').classList.add('active');
+        waitForPayment(currentOrderId);
     };
     
     // Поделиться
@@ -706,6 +643,8 @@
         window.Telegram.WebApp.expand();
         window.Telegram.WebApp.ready();
     }
+    
+    console.log('✅ Приложение загружено');
 </script>
 </body>
 </html>
