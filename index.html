@@ -2,826 +2,883 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Cope Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Faith Service | eSIM</title>
+    <!-- Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: #0a0404;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh;
-            color: #fff;
-            overflow-x: hidden;
+            background: #FFFFFF;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        @keyframes fadeInScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .faith-container {
+            max-width: 480px;
+            width: 100%;
+            background: #FFFFFF;
+            border-radius: 56px;
+            padding: 32px 24px 42px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
         }
 
-        @keyframes pulseRed {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 1;
-            }
+        .lang-switcher {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 16px;
         }
 
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .lang-btn {
+            background: #F3F9F9;
+            border: 1px solid #CEE7E5;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            color: #2A7F64;
+            margin-left: 8px;
         }
 
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
+        .lang-btn.active {
+            background: #2A7F64;
+            color: white;
+            border-color: #2A7F64;
         }
 
-        .splash-screen {
+        .esim-big {
+            font-size: 3.8rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #1C4E3F;
+            margin-bottom: 20px;
+        }
+
+        .fs-logo {
+            font-size: 3.4rem;
+            font-weight: 800;
+            color: #2A7F64;
+            margin-bottom: 6px;
+        }
+
+        .faith-service {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #538C8E;
+            border-top: 2px solid #DCEFEF;
+            display: inline-block;
+            padding-top: 8px;
+        }
+
+        .divider {
+            width: 64px;
+            height: 3px;
+            background: linear-gradient(90deg, #2A7F64, #6EB5B0);
+            margin: 20px auto 24px;
+            border-radius: 4px;
+        }
+
+        .support-hours {
+            background: #FFFFFF;
+            border-radius: 40px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border: 1px solid #E2F0EF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .support-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2A7F64;
+        }
+
+        .support-sub {
+            font-size: 0.7rem;
+            color: #8AB9B4;
+        }
+
+        .buttons-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            font-family: inherit;
+            transition: transform 0.1s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: #2A7F64;
+            color: white;
+            box-shadow: 0 6px 14px rgba(42, 127, 100, 0.2);
+        }
+
+        .btn-secondary {
+            background: #F3F9F9;
+            color: #2A7F64;
+            border: 1.5px solid #CEE7E5;
+        }
+
+        .btn-share {
+            background: #FFFFFF;
+            color: #2A7F64;
+            border: 1.5px solid #CEE7E5;
+        }
+
+        .footer-note {
+            margin-top: 28px;
+            font-size: 0.65rem;
+            color: #B8D1CF;
+        }
+
+        /* Экран заказа */
+        .order-screen, .payment-screen, .success-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, #1a0808 0%, #050202 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .splash-logo {
-            text-align: center;
-            animation: fadeInScale 0.5s ease;
-        }
-
-        .splash-icon {
-            font-size: 90px;
-            color: #dc2626;
-            filter: drop-shadow(0 0 25px rgba(220, 38, 38, 0.6));
-            animation: pulseRed 1.8s infinite;
-        }
-
-        .splash-logo h1 {
-            font-size: 36px;
-            margin-top: 24px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff, #dc2626);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .splash-logo p {
-            color: rgba(255,255,255,0.5);
-            margin-top: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        .loading-container {
-            width: 220px;
-            margin-top: 48px;
-        }
-
-        .loading-bar-bg {
-            width: 100%;
-            height: 3px;
-            background: rgba(220, 38, 38, 0.2);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .loading-progress {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #dc2626, #ef4444, #dc2626);
-            background-size: 200% 100%;
-            border-radius: 4px;
-            transition: width 0.3s ease;
-            animation: shimmer 1.5s infinite;
-        }
-
-        .main-content {
-            display: none;
-            min-height: 100vh;
-            padding-bottom: 85px;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #120606 0%, #1f0c0c 100%);
-            padding: 28px 20px 20px;
-            border-bottom: 1px solid rgba(220, 38, 38, 0.3);
-        }
-
-        .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .header-icon {
-            width: 52px;
-            height: 52px;
-            background: rgba(220, 38, 38, 0.15);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(220, 38, 38, 0.3);
-        }
-
-        .header-icon i {
-            font-size: 28px;
-            color: #dc2626;
-        }
-
-        .chat-title {
-            text-align: right;
-        }
-
-        .chat-title h2 {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-        }
-
-        .chat-title .badge {
-            font-size: 11px;
-            color: #dc2626;
-            background: rgba(220, 38, 38, 0.2);
-            padding: 4px 10px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 6px;
-        }
-
-        .stats-grid {
-            display: flex;
-            gap: 24px;
-            margin-top: 20px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .stat-item {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .stat-item i {
-            font-size: 20px;
-            color: #dc2626;
-            width: 28px;
-        }
-
-        .stat-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stat-value {
-            font-weight: 800;
-            font-size: 18px;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            opacity: 0.6;
-        }
-
-        .transition-section {
-            padding: 24px 16px;
-        }
-
-        .transition-card {
-            background: linear-gradient(135deg, #1f0c0c 0%, #140808 100%);
-            border-radius: 32px;
-            padding: 32px 24px;
-            text-align: center;
-            border: 1px solid rgba(220, 38, 38, 0.25);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-
-        .redirect-btn {
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
-            border: none;
-            width: 100%;
-            padding: 20px;
-            border-radius: 60px;
-            color: white;
-            font-size: 22px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
-        }
-
-        .redirect-btn:active {
-            transform: scale(0.97);
-        }
-
-        .redirect-btn i {
-            font-size: 24px;
-        }
-
-        .guarantors-tag {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .guarantors-tag span {
-            background: rgba(220, 38, 38, 0.12);
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 4, 4, 0.96);
-            backdrop-filter: blur(20px);
-            display: flex;
-            border-top: 1px solid rgba(220, 38, 38, 0.3);
-            padding: 10px 20px 24px;
-            gap: 16px;
-            z-index: 100;
-        }
-
-        .nav-btn {
-            flex: 1;
-            background: rgba(220, 38, 38, 0.08);
-            border: none;
-            padding: 12px 8px;
-            border-radius: 48px;
-            color: #fff;
-            font-weight: 600;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid transparent;
-        }
-
-        .nav-btn i {
-            font-size: 18px;
-        }
-
-        .nav-btn.active {
-            background: #dc2626;
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.96);
-        }
-
-        .panel {
-            display: none;
-            padding: 0 16px;
-            animation: slideUp 0.35s ease;
-        }
-
-        .panel.active-panel {
-            display: block;
-        }
-
-        .menu-group {
-            background: rgba(31, 12, 12, 0.6);
-            border-radius: 28px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(220, 38, 38, 0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .menu-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(220, 38, 38, 0.3);
-        }
-
-        .menu-header i {
-            font-size: 24px;
-            color: #dc2626;
-        }
-
-        .menu-header h3 {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .link-card {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 20px;
-            padding: 14px 16px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-left: 3px solid #dc2626;
-        }
-
-        .link-card:active {
-            transform: scale(0.98);
-            background: rgba(220, 38, 38, 0.15);
-        }
-
-        .link-card i {
-            width: 28px;
-            font-size: 20px;
-            color: #dc2626;
-        }
-
-        .link-content {
-            flex: 1;
-        }
-
-        .link-title {
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-
-        .link-sub {
-            font-size: 11px;
-            opacity: 0.5;
-        }
-
-        .prefixes-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 16px;
-            max-height: 400px;
+            background: #FFFFFF;
+            z-index: 2000;
             overflow-y: auto;
-            padding: 4px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 24px 20px 40px;
         }
 
-        .prefix-item {
-            background: rgba(220, 38, 38, 0.1);
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-size: 13px;
-            font-family: monospace;
-            display: inline-flex;
+        .order-screen.active, .payment-screen.active, .success-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .screen-header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            border: 1px solid rgba(220, 38, 38, 0.3);
-            transition: all 0.2s;
+            margin-bottom: 32px;
+        }
+
+        .screen-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1C4E3F;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #F3F9F9;
+            border: 1px solid #CEE7E5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            font-size: 24px;
+            color: #2A7F64;
         }
 
-        .prefix-item i {
-            font-size: 12px;
-            color: #dc2626;
+        .tariff-section {
+            margin-bottom: 28px;
         }
 
-        .prefix-item:active {
-            transform: scale(0.96);
-            background: rgba(220, 38, 38, 0.25);
-        }
-
-        .guarant-preview {
-            background: linear-gradient(135deg, #1f0c0c, #120606);
-            border-radius: 32px;
-            padding: 40px 24px;
-            text-align: center;
-            border: 1px solid rgba(220, 38, 38, 0.4);
-        }
-
-        .guarant-icon-large {
-            font-size: 70px;
-            color: #dc2626;
-            margin-bottom: 24px;
-            opacity: 0.9;
-        }
-
-        .guarant-title {
-            font-size: 26px;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
-
-        .coming-badge {
-            background: rgba(220, 38, 38, 0.2);
-            padding: 6px 18px;
-            border-radius: 40px;
-            display: inline-block;
-            font-size: 13px;
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8FB9B5;
             font-weight: 600;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .tariff-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tariff-option {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tariff-option.selected {
+            border-color: #2A7F64;
+            background: #F0F7F6;
+        }
+
+        .tariff-info {
+            text-align: left;
+        }
+
+        .tariff-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1C4E3F;
+        }
+
+        .tariff-desc {
+            font-size: 0.7rem;
+            color: #8AB9B4;
+        }
+
+        .tariff-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2A7F64;
+        }
+
+        .phone-section {
+            margin-bottom: 28px;
+        }
+
+        .phone-card {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .phone-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1C4E3F;
+        }
+
+        .phone-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #2A7F64;
+            background: #E8F3F2;
+            padding: 4px 12px;
+            border-radius: 40px;
+        }
+
+        .email-section {
+            margin-bottom: 28px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #F8FCFB;
+            outline: none;
+        }
+
+        .email-input:focus {
+            border-color: #2A7F64;
+        }
+
+        .activation-section {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+
+        .activation-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1C4E3F;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .total-row:last-child {
+            border-top: 1px solid #D4EAE8;
+            padding-top: 8px;
+            font-weight: 700;
+        }
+
+        .payment-details {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .payment-details p {
+            margin: 12px 0;
+        }
+
+        .payment-details strong {
+            color: #2A7F64;
+        }
+
+        .payment-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2A7F64;
+            text-align: center;
             margin: 20px 0;
         }
 
-        .guarant-info {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 20px;
-            padding: 18px;
-            text-align: left;
-            margin-top: 24px;
+        .qr-code {
+            max-width: 250px;
+            width: 100%;
+            margin: 20px auto;
+            display: block;
+            border-radius: 16px;
         }
 
-        .guarant-info-item {
+        .esim-phone {
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 16px;
+            background: #F8FCFB;
+            border-radius: 24px;
+            color: #2A7F64;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 3000;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
 
-        .guarant-info-item:last-child {
-            border-bottom: none;
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        .guarant-info-item i {
-            width: 28px;
-            color: #dc2626;
-            font-size: 16px;
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            padding: 32px;
+            text-align: center;
+            max-width: 280px;
+            width: 90%;
         }
 
-        .scrollable {
-            max-height: 450px;
-            overflow-y: auto;
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #E2F0EF;
+            border-top-color: #2A7F64;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
-        ::-webkit-scrollbar {
-            width: 4px;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.05);
+        .checkmark {
+            width: 60px;
+            height: 60px;
+            background: #2A7F64;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #dc2626;
-            border-radius: 4px;
+        .loading-placeholder {
+            text-align: center;
+            padding: 40px;
+            color: #8AB9B4;
         }
 
-        @media (max-width: 450px) {
-            .redirect-btn {
-                font-size: 18px;
-                padding: 18px;
-            }
-            .nav-btn {
-                font-size: 13px;
-            }
-            .prefix-item {
-                font-size: 11px;
-                padding: 6px 12px;
-            }
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2A7F64;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: all 0.2s;
+            pointer-events: none;
+            z-index: 4000;
+            white-space: nowrap;
+        }
+
+        .toast-message.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .faith-container { padding: 24px 18px 32px; }
+            .esim-big { font-size: 2.8rem; }
+            .fs-logo { font-size: 2.5rem; }
         }
     </style>
 </head>
 <body>
-    <div class="splash-screen" id="splashScreen">
-        <div class="splash-logo">
-            <div class="splash-icon">
-                <i class="fas fa-comment-dots"></i>
-            </div>
-            <h1>COPE CHAT</h1>
-            <p>NOTSCAM</p>
-            <div class="loading-container">
-                <div class="loading-bar-bg">
-                    <div class="loading-progress" id="loadingProgress"></div>
+    <div class="faith-container">
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="ru">RU</button>
+            <button class="lang-btn" data-lang="uk">UA</button>
+        </div>
+        <div class="esim-big">eSIM</div>
+        <div class="fs-logo">FS</div>
+        <div class="faith-service">Faith Service</div>
+        <div class="divider"></div>
+        <div class="support-hours">
+            <span class="support-text">Поддержка 24/7</span>
+            <span class="support-sub">Ответ в течение 5 минут</span>
+        </div>
+        <div class="buttons-group">
+            <button class="btn btn-primary" id="buyEsimBtn">Приобрести eSIM</button>
+            <a href="https://t.me/+K9MIqYiEfcI3ZDQy" target="_blank" class="btn btn-secondary">Группа сервиса</a>
+            <button class="btn btn-share" id="shareBtn">Поделиться приложением</button>
+        </div>
+        <div class="footer-note">Продажа eSIM для GSM линий</div>
+    </div>
+
+    <!-- Экран заказа -->
+    <div id="orderScreen" class="order-screen">
+        <div class="screen-header">
+            <h2>Оформление eSIM</h2>
+            <div class="close-btn" id="closeOrderBtn">✕</div>
+        </div>
+        <div class="tariff-section">
+            <div class="section-label">ВЫБОР ТАРИФА</div>
+            <div class="tariff-grid" id="tariffGrid">
+                <div class="tariff-option" data-price="100" data-name="Минимум" data-gb="1" data-minutes="0">
+                    <div><div class="tariff-name">Минимум</div><div class="tariff-desc">1 ГБ / 0 мин</div></div>
+                    <div class="tariff-price">100 ₽</div>
                 </div>
+                <div class="tariff-option" data-price="320" data-name="Стандарт" data-gb="10" data-minutes="50">
+                    <div><div class="tariff-name">Стандарт</div><div class="tariff-desc">10 ГБ / 50 мин</div></div>
+                    <div class="tariff-price">320 ₽</div>
+                </div>
+                <div class="tariff-option" data-price="600" data-name="Мировой" data-gb="0" data-minutes="200">
+                    <div><div class="tariff-name">Мировой</div><div class="tariff-desc">0 ГБ / 200 мин</div></div>
+                    <div class="tariff-price">600 ₽</div>
+                </div>
+                <div class="tariff-option" data-price="1250" data-name="Максимум" data-gb="1020" data-minutes="1000">
+                    <div><div class="tariff-name">Максимум</div><div class="tariff-desc">1020 ГБ / 1000 мин</div></div>
+                    <div class="tariff-price">1250 ₽</div>
+                </div>
+            </div>
+        </div>
+        <div class="phone-section">
+            <div class="section-label">НОМЕР ТЕЛЕФОНА</div>
+            <div class="phone-card">
+                <span class="phone-label">Номер</span>
+                <span class="phone-value">Бесплатно</span>
+            </div>
+        </div>
+        <div class="email-section">
+            <div class="section-label">ЭЛЕКТРОННАЯ ПОЧТА</div>
+            <input type="email" id="emailInput" class="email-input" placeholder="your@email.com">
+        </div>
+        <div class="activation-section">
+            <div class="activation-title">Активация eSIM</div>
+            <div class="total-row"><span>Тариф</span><span id="tariffPriceDisplay">100 ₽</span></div>
+            <div class="total-row"><span>Активация</span><span>200 ₽</span></div>
+            <div class="total-row"><span>ИТОГО</span><span id="totalPriceDisplay">300 ₽</span></div>
+        </div>
+        <button class="btn btn-primary" id="continueBtn">Продолжить</button>
+    </div>
+
+    <!-- Экран оплаты -->
+    <div id="paymentScreen" class="payment-screen">
+        <div class="screen-header">
+            <h2>Оплата</h2>
+            <div class="close-btn" id="closePaymentBtn">✕</div>
+        </div>
+        <div class="payment-amount" id="paymentAmountDisplay">0 ₽</div>
+        <div class="payment-details">
+            <p><strong>📱 Номер СБП:</strong> +7 999 123-45-67</p>
+            <p><strong>👤 Получатель:</strong> Иван Иванов</p>
+            <p><strong>🏦 Банк:</strong> Т-Банк</p>
+            <p style="font-size:0.7rem; color:#8AB9B4;">* Включена комиссия 9%</p>
+        </div>
+        <button class="btn btn-primary" id="iPaidBtn">Я оплатил</button>
+    </div>
+
+    <!-- Экран получения eSIM -->
+    <div id="successScreen" class="success-screen">
+        <div class="screen-header">
+            <h2>Ваш eSIM</h2>
+            <div class="close-btn" id="closeSuccessBtn">✕</div>
+        </div>
+        <div id="esimContent">
+            <div class="loading-placeholder" id="esimLoading">
+                <div class="spinner" style="width:40px; height:40px;"></div>
+                <p>Ожидание оформления eSIM...</p>
+            </div>
+            <div id="esimReady" style="display:none;">
+                <img id="qrImage" class="qr-code">
+                <div class="esim-phone" id="esimPhone"></div>
+                <button class="btn btn-secondary" id="refreshEsimBtn" style="margin-top:16px;">Проверить</button>
             </div>
         </div>
     </div>
 
-    <div class="main-content" id="mainContent">
-        <div class="header">
-            <div class="header-top">
-                <div class="header-icon">
-                    <i class="fas fa-shield-hooded"></i>
-                </div>
-                <div class="chat-title">
-                    <h2>Cope Chat</h2>
-                    <span class="badge"><i class="fas fa-circle" style="font-size: 8px; margin-right: 4px;"></i> Купи - Продай</span>
-                </div>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <div class="stat-info">
-                        <span class="stat-value" id="membersCount">4 855+</span>
-                        <span class="stat-label">участников</span>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-wifi"></i>
-                    <div class="stat-info">
-                        <span class="stat-value" id="onlineCount">0</span>
-                        <span class="stat-label">в сети</span>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-coins"></i>
-                    <div class="stat-info">
-                        <span class="stat-value">USDT</span>
-                        <span class="stat-label">TRC20</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="transition-section">
-            <div class="transition-card">
-                <button class="redirect-btn" id="redirectToChat">
-                    <i class="fas fa-paper-plane"></i>
-                    ПЕРЕЙТИ В ЧАТ
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-                <div class="guarantors-tag">
-                    <span><i class="fas fa-shield-alt"></i> @kobra</span>
-                    <span><i class="fas fa-shield-alt"></i> @M_a_Jl_bl_U</span>
-                    <span><i class="fas fa-gavel"></i> Гаранты</span>
-                </div>
-            </div>
-        </div>
-
-        <div id="menuPanel" class="panel active-panel">
-            <div class="menu-group">
-                <div class="menu-header">
-                    <i class="fas fa-link"></i>
-                    <h3>ОСНОВНЫЕ ССЫЛКИ</h3>
-                </div>
-                <div class="link-card" data-link="https://t.me/+McOHE8ZXDdNkNmZi">
-                    <i class="fas fa-comments"></i>
-                    <div class="link-content">
-                        <div class="link-title">Cope Chat</div>
-                        <div class="link-sub">Основной чат</div>
-                    </div>
-                    <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
-                </div>
-                <div class="link-card" data-link="http://t.me/mainreputation">
-                    <i class="fas fa-chart-line"></i>
-                    <div class="link-content">
-                        <div class="link-title">Main Reputation</div>
-                        <div class="link-sub">Проверка репутации</div>
-                    </div>
-                    <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
-                </div>
-                <div class="link-card" data-link="https://telegra.ph/Sope-Chat--Pravila-02-28-7">
-                    <i class="fas fa-book"></i>
-                    <div class="link-content">
-                        <div class="link-title">Правила чата</div>
-                        <div class="link-sub">Обязательно к ознакомлению</div>
-                    </div>
-                    <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
-                </div>
-                <div class="link-card" data-link="https://t.me/M_a_JI_bl_U">
-                    <i class="fas fa-handshake"></i>
-                    <div class="link-content">
-                        <div class="link-title">Сотрудничество</div>
-                        <div class="link-sub">@M_a_JI_bl_U</div>
-                    </div>
-                    <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
-                </div>
-                <div class="link-card" data-link="https://t.me/M_a_JI_bl_U">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div class="link-content">
-                        <div class="link-title">Подать жалобу</div>
-                        <div class="link-sub">@M_a_JI_bl_U</div>
-                    </div>
-                    <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
-                </div>
-            </div>
-
-            <div class="menu-group">
-                <div class="menu-header">
-                    <i class="fas fa-tags"></i>
-                    <h3>АКТУАЛЬНЫЕ ПРЕФИКСЫ</h3>
-                </div>
-                <div class="prefixes-grid" id="prefixesList"></div>
-            </div>
-        </div>
-
-        <div id="guarantPanel" class="panel">
-            <div class="guarant-preview">
-                <div class="guarant-icon-large">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div class="guarant-title">AUTO GUARANT</div>
-                <div class="coming-badge">
-                    <i class="fas fa-code-branch"></i> IN DEVELOPMENT
-                </div>
-                <p style="opacity: 0.7; font-size: 14px; margin-top: 8px;">
-                    Автоматический гарант для безопасных сделок
-                </p>
-                <div class="guarant-info">
-                    <div class="guarant-info-item">
-                        <i class="fas fa-lock"></i>
-                        <span>Гарант-сделки USDT</span>
-                    </div>
-                    <div class="guarant-info-item">
-                        <i class="fas fa-scale-balanced"></i>
-                        <span>Разрешение споров гарантами</span>
-                    </div>
-                    <div class="guarant-info-item">
-                        <i class="fas fa-clock"></i>
-                        <span>Скоро: авто-гарант 24/7</span>
-                    </div>
-                </div>
-                <div class="guarantors-tag" style="margin-top: 20px;">
-                    <span><i class="fas fa-shield"></i> @kobra</span>
-                    <span><i class="fas fa-shield"></i> @M_a_Jl_bl_U</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="bottom-nav">
-            <button class="nav-btn active" id="menuNavBtn">
-                <i class="fas fa-bars"></i>
-                <span>Главное меню</span>
-            </button>
-            <button class="nav-btn" id="guarantNavBtn">
-                <i class="fas fa-shield-hooded"></i>
-                <span>Гарант</span>
-            </button>
+    <!-- Модальное окно -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-content">
+            <div class="spinner"></div>
+            <p>Ожидание подтверждения оплаты...</p>
         </div>
     </div>
+
+    <div id="toastMessage" class="toast-message"></div>
 
     <script>
-        (function(){
+        // ========== КОНФИГУРАЦИЯ SUPABASE ==========
+        // 👇 ЗАМЕНИТЕ НА СВОИ ДАННЫЕ ИЗ SUPABASE
+        const SUPABASE_URL = 'https://domtiusbwjbxbfkygwvx.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvbXRpdXNid2pieGJma3lnd3Z4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTAxMjgsImV4cCI6MjA5MDUyNjEyOH0.GlYbpkx1tWUqJ2kwrOHFH5f7EaklBcuXHz8W0U-YGWg';
+        
+        // Проверяем, заполнены ли данные
+        const isSupabaseConfigured = SUPABASE_URL !== 'https://ваш-проект.supabase.co' && SUPABASE_ANON_KEY !== 'ваш-anon-key';
+        
+        let supabaseClient = null;
+        if (isSupabaseConfigured) {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+        
+        // ========== ПЕРЕМЕННЫЕ ==========
+        let currentLang = 'ru';
+        let currentOrderId = null;
+        let currentTotal = 0;
+        let pollingInterval = null;
+        
+        let selectedTariff = {
+            name: 'Минимум',
+            gb: '1',
+            minutes: '0',
+            price: 100
+        };
+        
+        const ACTIVATION_FEE = 200;
+        const COMMISSION = 0.09;
+        
+        // ========== ВСПОМОГАТЕЛЬНЫЕ ==========
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+        
+        function generateOrderNumber() {
+            return 'FS' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
+        }
+        
+        function calcTotal(price) {
+            return Math.ceil((price + ACTIVATION_FEE) * (1 + COMMISSION));
+        }
+        
+        // ========== SUPABASE ФУНКЦИИ ==========
+        async function createOrder(email) {
+            if (!supabaseClient) {
+                // Демо-режим без Supabase
+                const orderId = 'demo_' + Date.now();
+                currentOrderId = orderId;
+                currentTotal = calcTotal(selectedTariff.price);
+                localStorage.setItem('demoOrder', JSON.stringify({
+                    id: orderId,
+                    total: currentTotal,
+                    email: email,
+                    status: 'pending'
+                }));
+                return { id: orderId, total_amount: currentTotal };
+            }
+            
+            const orderNumber = generateOrderNumber();
+            const total = calcTotal(selectedTariff.price);
+            
+            const { data, error } = await supabaseClient
+                .from('orders')
+                .insert([{
+                    order_number: orderNumber,
+                    tariff_name: selectedTariff.name,
+                    tariff_gb: selectedTariff.gb,
+                    tariff_minutes: selectedTariff.minutes,
+                    tariff_price: selectedTariff.price,
+                    activation_fee: ACTIVATION_FEE,
+                    total_amount: total,
+                    email: email,
+                    status: 'pending'
+                }])
+                .select()
+                .single();
+            
+            if (error) {
+                console.error(error);
+                showToast('Ошибка создания заказа');
+                return null;
+            }
+            return data;
+        }
+        
+        async function getOrder(orderId) {
+            if (!supabaseClient) {
+                const demo = localStorage.getItem('demoOrder');
+                if (demo) return JSON.parse(demo);
+                return null;
+            }
+            
+            const { data, error } = await supabaseClient
+                .from('orders')
+                .select('*')
+                .eq('id', orderId)
+                .single();
+            
+            if (error) return null;
+            return data;
+        }
+        
+        async function updateOrderStatus(orderId, status) {
+            if (!supabaseClient) {
+                const demo = localStorage.getItem('demoOrder');
+                if (demo) {
+                    const order = JSON.parse(demo);
+                    order.status = status;
+                    localStorage.setItem('demoOrder', JSON.stringify(order));
+                }
+                return true;
+            }
+            
+            const { error } = await supabaseClient
+                .from('orders')
+                .update({ status: status, updated_at: new Date() })
+                .eq('id', orderId);
+            
+            return !error;
+        }
+        
+        // ========== ПОЛЛИНГ ==========
+        function startPaymentPolling(orderId) {
+            if (pollingInterval) clearInterval(pollingInterval);
+            
+            pollingInterval = setInterval(async () => {
+                const order = await getOrder(orderId);
+                if (!order) return;
+                
+                if (order.status === 'paid') {
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                    document.getElementById('loadingModal').classList.remove('active');
+                    showToast('Оплата подтверждена!');
+                    startEsimPolling(orderId);
+                }
+            }, 3000);
+        }
+        
+        function startEsimPolling(orderId) {
+            if (pollingInterval) clearInterval(pollingInterval);
+            
+            pollingInterval = setInterval(async () => {
+                const order = await getOrder(orderId);
+                if (!order) return;
+                
+                if (order.status === 'completed' && order.qr_code && order.esim_phone) {
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                    
+                    document.getElementById('esimLoading').style.display = 'none';
+                    document.getElementById('esimReady').style.display = 'block';
+                    document.getElementById('qrImage').src = order.qr_code;
+                    document.getElementById('esimPhone').textContent = `Номер eSIM: ${order.esim_phone}`;
+                    document.getElementById('successScreen').classList.add('active');
+                }
+            }, 3000);
+        }
+        
+        // ========== ОБНОВЛЕНИЕ ЦЕН ==========
+        function updatePrices() {
+            document.getElementById('tariffPriceDisplay').textContent = `${selectedTariff.price} ₽`;
+            document.getElementById('totalPriceDisplay').textContent = `${selectedTariff.price + ACTIVATION_FEE} ₽`;
+        }
+        
+        // ========== ОБРАБОТЧИКИ ==========
+        document.getElementById('buyEsimBtn').onclick = () => {
+            document.getElementById('orderScreen').classList.add('active');
+        };
+        
+        document.getElementById('closeOrderBtn').onclick = () => {
+            document.getElementById('orderScreen').classList.remove('active');
+        };
+        
+        document.getElementById('closePaymentBtn').onclick = () => {
+            document.getElementById('paymentScreen').classList.remove('active');
+        };
+        
+        document.getElementById('closeSuccessBtn').onclick = () => {
+            document.getElementById('successScreen').classList.remove('active');
+            document.getElementById('esimLoading').style.display = 'block';
+            document.getElementById('esimReady').style.display = 'none';
+        };
+        
+        document.getElementById('refreshEsimBtn').onclick = async () => {
+            if (currentOrderId) {
+                const order = await getOrder(currentOrderId);
+                if (order && order.status === 'completed' && order.qr_code && order.esim_phone) {
+                    document.getElementById('esimLoading').style.display = 'none';
+                    document.getElementById('esimReady').style.display = 'block';
+                    document.getElementById('qrImage').src = order.qr_code;
+                    document.getElementById('esimPhone').textContent = `Номер eSIM: ${order.esim_phone}`;
+                } else {
+                    showToast('eSIM еще не готов');
+                }
+            }
+        };
+        
+        // Выбор тарифа
+        document.querySelectorAll('.tariff-option').forEach(opt => {
+            opt.onclick = () => {
+                document.querySelectorAll('.tariff-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                selectedTariff = {
+                    name: opt.getAttribute('data-name'),
+                    gb: opt.getAttribute('data-gb'),
+                    minutes: opt.getAttribute('data-minutes'),
+                    price: parseInt(opt.getAttribute('data-price'))
+                };
+                updatePrices();
+            };
+        });
+        
+        // Продолжить
+        document.getElementById('continueBtn').onclick = async () => {
+            const email = document.getElementById('emailInput').value.trim();
+            if (!email || !email.includes('@')) {
+                showToast('Введите корректный email');
+                return;
+            }
+            
+            const order = await createOrder(email);
+            if (!order) return;
+            
+            currentOrderId = order.id;
+            currentTotal = order.total_amount;
+            
+            document.getElementById('paymentAmountDisplay').textContent = `${currentTotal} ₽`;
+            document.getElementById('orderScreen').classList.remove('active');
+            document.getElementById('paymentScreen').classList.add('active');
+        };
+        
+        // Я оплатил
+        document.getElementById('iPaidBtn').onclick = async () => {
+            if (!currentOrderId) return;
+            
+            await updateOrderStatus(currentOrderId, 'pending');
+            document.getElementById('paymentScreen').classList.remove('active');
+            document.getElementById('loadingModal').classList.add('active');
+            startPaymentPolling(currentOrderId);
+        };
+        
+        // Поделиться
+        document.getElementById('shareBtn').onclick = async () => {
+            if (navigator.share) {
+                await navigator.share({ title: 'Faith Service', url: location.href });
+            } else {
+                navigator.clipboard.writeText(location.href);
+                showToast('Ссылка скопирована');
+            }
+        };
+        
+        // Язык
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentLang = btn.getAttribute('data-lang');
+            };
+        });
+        
+        // Инициализация
+        document.querySelector('.tariff-option').classList.add('selected');
+        updatePrices();
+        
+        // Telegram
+        if (window.Telegram?.WebApp) {
             const tg = window.Telegram.WebApp;
             tg.expand();
             tg.enableClosingConfirmation();
-            tg.setHeaderColor('#0a0404');
-            tg.setBackgroundColor('#0a0404');
-            
-            const splashScreen = document.getElementById('splashScreen');
-            const mainContent = document.getElementById('mainContent');
-            const loadingProgress = document.getElementById('loadingProgress');
-            const redirectBtn = document.getElementById('redirectToChat');
-            const menuPanel = document.getElementById('menuPanel');
-            const guarantPanel = document.getElementById('guarantPanel');
-            const menuNavBtn = document.getElementById('menuNavBtn');
-            const guarantNavBtn = document.getElementById('guarantNavBtn');
-            const onlineSpan = document.getElementById('onlineCount');
-            const prefixesList = document.getElementById('prefixesList');
-            
-            const prefixes = [
-                '@tornadoweek', '@New_afrodita', '@FuckTraurov', '@sooruzhitel', '@Tainyiskyp',
-                '@anus', '@MR_Patrik1', '@hell6_6', '@barmaley_tg', '@AgentSmithWork',
-                '@privat_bank24ua', '@BilPins', '@sayqv', '@Lord_of_Max1', '@seventyMEOW',
-                '@grilodoff', '@capone_papa', '@mreedpeper', '@KaiSupRent', '@forse_17',
-                '@BEARtracks', '@LegendLocQ', '@GABBANA_MAX', '@vvsqrv', '@sumadhediu',
-                '@scamdura', '@Richirich2', '@usergeeks'
-            ];
-            
-            for(let i = 0; i < prefixes.length; i++){
-                const item = document.createElement('div');
-                item.className = 'prefix-item';
-                const prefixText = prefixes[i];
-                item.innerHTML = '<i class="fas fa-at"></i> ' + prefixText;
-                item.addEventListener('click', (function(link){
-                    return function(){
-                        const username = link.replace('@', '');
-                        const url = 'https://t.me/' + username;
-                        if(tg.openTelegramLink){
-                            tg.openTelegramLink(url);
-                        } else {
-                            window.open(url, '_blank');
-                        }
-                        if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-                    };
-                })(prefixText));
-                prefixesList.appendChild(item);
-            }
-            
-            function updateOnline(){
-                const randomOnline = Math.floor(Math.random() * 3001);
-                onlineSpan.innerText = randomOnline;
-            }
-            
-            updateOnline();
-            setInterval(updateOnline, 60000);
-            
-            let progress = 0;
-            const loadInterval = setInterval(function(){
-                progress += Math.random() * 15;
-                if(progress >= 100){
-                    progress = 100;
-                    clearInterval(loadInterval);
-                    setTimeout(function(){
-                        splashScreen.style.opacity = '0';
-                        setTimeout(function(){
-                            splashScreen.style.display = 'none';
-                            mainContent.style.display = 'block';
-                            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-                        }, 400);
-                    }, 200);
-                }
-                loadingProgress.style.width = Math.min(progress, 100) + '%';
-            }, 80);
-            
-            redirectBtn.addEventListener('click', function(){
-                const chatLink = 'https://t.me/+McOHE8ZXDdNkNmZi';
-                if(tg.openTelegramLink){
-                    tg.openTelegramLink(chatLink);
-                } else {
-                    window.open(chatLink, '_blank');
-                }
-                if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-            });
-            
-            function setActivePanel(panel){
-                if(panel === 'menu'){
-                    menuPanel.classList.add('active-panel');
-                    guarantPanel.classList.remove('active-panel');
-                    menuNavBtn.classList.add('active');
-                    guarantNavBtn.classList.remove('active');
-                } else {
-                    guarantPanel.classList.add('active-panel');
-                    menuPanel.classList.remove('active-panel');
-                    guarantNavBtn.classList.add('active');
-                    menuNavBtn.classList.remove('active');
-                }
-                if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-            }
-            
-            menuNavBtn.addEventListener('click', function(){
-                setActivePanel('menu');
-            });
-            
-            guarantNavBtn.addEventListener('click', function(){
-                setActivePanel('guarant');
-            });
-            
-            const linkCards = document.querySelectorAll('.link-card');
-            for(let i = 0; i < linkCards.length; i++){
-                const card = linkCards[i];
-                card.addEventListener('click', function(){
-                    const link = this.getAttribute('data-link');
-                    if(link){
-                        if(tg.openTelegramLink){
-                            tg.openTelegramLink(link);
-                        } else {
-                            window.open(link, '_blank');
-                        }
-                        if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-                    }
-                });
-            }
-        })();
+            tg.ready();
+        }
+        
+        // Предупреждение если Supabase не настроен
+        if (!isSupabaseConfigured) {
+            console.warn('⚠️ Supabase не настроен. Работает демо-режим с localStorage');
+        }
     </script>
 </body>
 </html>
