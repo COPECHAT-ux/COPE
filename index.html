@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Faith Service | eSIM</title>
+    <title>Faith Service | eSIM активация</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs2-fix@0.0.1/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -13,638 +14,1129 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
+
         body {
-            background: #F8FAF9;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 16px;
             min-height: 100vh;
+            background: #FFFFFF;
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
-        .app {
-            max-width: 400px;
+
+        .faith-container {
+            max-width: 480px;
             width: 100%;
-            margin: 0 auto;
-        }
-        .card {
-            background: white;
-            border-radius: 48px;
-            padding: 32px 24px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            background: #FFFFFF;
+            border-radius: 56px;
+            padding: 32px 24px 42px;
             text-align: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
         }
-        .logo {
-            width: 72px;
-            height: 72px;
-            background: #2E8B6F;
-            border-radius: 24px;
+
+        .lang-switcher {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
+            justify-content: flex-end;
+            margin-bottom: 16px;
         }
-        .logo svg {
-            width: 40px;
-            height: 40px;
-            stroke: white;
+
+        .lang-btn {
+            background: #F3F9F9;
+            border: 1px solid #CEE7E5;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            color: #2A7F64;
+            margin-left: 8px;
         }
-        h1 {
-            font-size: 32px;
-            font-weight: 800;
-            color: #1E4A3A;
-            letter-spacing: -0.5px;
+
+        .lang-btn.active {
+            background: #2A7F64;
+            color: white;
+            border-color: #2A7F64;
         }
-        .sub {
-            font-size: 12px;
-            color: #8BA5A0;
-            letter-spacing: 1px;
-            margin-top: 4px;
+
+        .esim-big {
+            font-size: 3.8rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #1C4E3F;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         }
-        .divider {
-            width: 50px;
-            height: 2px;
-            background: #E2EFEA;
-            margin: 20px auto;
-        }
-        .support {
-            background: #F5F9F7;
-            border-radius: 28px;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+
+        .brand-block {
             margin-bottom: 24px;
         }
+
+        .fs-logo {
+            font-size: 3.4rem;
+            font-weight: 800;
+            color: #2A7F64;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .faith-service {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #538C8E;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 2px solid #DCEFEF;
+            display: inline-block;
+            padding-top: 8px;
+        }
+
+        .divider {
+            width: 64px;
+            height: 3px;
+            background: linear-gradient(90deg, #2A7F64, #6EB5B0, #9FD3CF);
+            margin: 20px auto 24px;
+            border-radius: 4px;
+        }
+
+        .support-hours {
+            background: #FFFFFF;
+            border-radius: 40px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border: 1px solid #E2F0EF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
         .support-icon {
-            width: 44px;
-            height: 44px;
-            background: white;
-            border-radius: 30px;
+            width: 28px;
+            height: 28px;
+            background: #F0F7F6;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+
         .support-icon svg {
-            width: 22px;
-            height: 22px;
-            stroke: #2E8B6F;
+            width: 18px;
+            height: 18px;
+            stroke: #2A7F64;
+            stroke-width: 1.8;
         }
+
         .support-text {
-            text-align: left;
-        }
-        .support-text h4 {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1E4A3A;
-        }
-        .support-text p {
-            font-size: 11px;
-            color: #8BA5A0;
-        }
-        .btn {
-            width: 100%;
-            padding: 16px 20px;
-            border: none;
-            border-radius: 60px;
-            font-size: 16px;
+            font-size: 0.85rem;
             font-weight: 600;
+            color: #2A7F64;
+        }
+
+        .support-sub {
+            font-size: 0.7rem;
+            color: #8AB9B4;
+            margin-left: 4px;
+            font-weight: 500;
+        }
+
+        .buttons-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            padding: 14px 20px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             cursor: pointer;
-            font-family: inherit;
-            transition: all 0.1s ease;
-        }
-        .btn:active {
-            transform: scale(0.97);
-        }
-        .btn-primary {
-            background: #2E8B6F;
-            color: white;
-            box-shadow: 0 4px 12px rgba(46,139,111,0.3);
-        }
-        .btn-secondary {
-            background: #F0F5F3;
-            color: #2E8B6F;
-            border: 1px solid #D4E5DF;
-        }
-        .btn-outline {
-            background: white;
-            color: #2E8B6F;
-            border: 1px solid #D4E5DF;
-        }
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .footer {
-            font-size: 10px;
-            color: #B8CFC8;
-        }
-        
-        /* Экраны */
-        .screen {
-            position: fixed;
-            top: 0;
-            left: 0;
+            border: none;
             width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 1000;
-            overflow-y: auto;
-            padding: 24px 20px;
-            display: none;
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         }
-        .screen.active {
-            display: block;
+
+        .btn-primary {
+            background: #2A7F64;
+            color: white;
+            box-shadow: 0 6px 14px rgba(42, 127, 100, 0.2);
         }
-        .screen-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
+
+        .btn-primary:active {
+            transform: scale(0.97);
+            background: #236B54;
         }
-        .screen-header h2 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1E4A3A;
+
+        .btn-secondary {
+            background: #F3F9F9;
+            color: #2A7F64;
+            border: 1.5px solid #CEE7E5;
         }
-        .close-btn {
-            width: 40px;
-            height: 40px;
-            background: #F0F5F3;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+
+        .btn-secondary:active {
+            transform: scale(0.97);
+            background: #E8F3F2;
         }
-        .close-btn svg {
+
+        .btn-share {
+            background: #FFFFFF;
+            color: #2A7F64;
+            border: 1.5px solid #CEE7E5;
+        }
+
+        .btn-share:active {
+            transform: scale(0.97);
+            background: #F8FCFB;
+        }
+
+        .btn-icon {
             width: 20px;
             height: 20px;
-            stroke: #2E8B6F;
-        }
-        .section-title {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #8BA5A0;
-            margin-bottom: 12px;
-            text-align: left;
-        }
-        .tariff-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-        .tariff-item {
-            background: #F5F9F7;
-            border: 1px solid #E2EFEA;
-            border-radius: 20px;
-            padding: 14px 18px;
-            display: flex;
-            justify-content: space-between;
+            display: inline-flex;
             align-items: center;
-            cursor: pointer;
+            justify-content: center;
         }
-        .tariff-item.selected {
-            border-color: #2E8B6F;
-            background: #EBF4F1;
+
+        .btn-icon svg {
+            width: 18px;
+            height: 18px;
         }
-        .tariff-name {
-            font-weight: 700;
-            color: #1E4A3A;
+
+        .btn-primary .btn-icon svg {
+            stroke: white;
+            fill: none;
         }
-        .tariff-desc {
-            font-size: 11px;
-            color: #8BA5A0;
-            margin-top: 4px;
+
+        .btn-secondary .btn-icon svg,
+        .btn-share .btn-icon svg {
+            stroke: #2A7F64;
+            fill: none;
         }
-        .tariff-price {
-            font-weight: 800;
-            color: #2E8B6F;
-            font-size: 18px;
+
+        .footer-note {
+            margin-top: 28px;
+            font-size: 0.65rem;
+            font-weight: 450;
+            color: #B8D1CF;
+            letter-spacing: 0.3px;
         }
-        .info-card {
-            background: #F5F9F7;
-            border: 1px solid #E2EFEA;
-            border-radius: 20px;
-            padding: 14px 18px;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .info-label {
-            font-weight: 500;
-            color: #1E4A3A;
-        }
-        .info-value {
-            background: #E2EFEA;
-            padding: 4px 14px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #2E8B6F;
-        }
-        .input-field {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1px solid #E2EFEA;
-            border-radius: 20px;
-            font-size: 15px;
-            background: #F5F9F7;
-            margin-bottom: 20px;
-            outline: none;
-            font-family: inherit;
-        }
-        .input-field:focus {
-            border-color: #2E8B6F;
-        }
-        .total-box {
-            background: #F5F9F7;
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        .total-row.border-top {
-            border-top: 1px solid #E2EFEA;
-            padding-top: 10px;
-            margin-top: 6px;
-            font-weight: 700;
-        }
-        .payment-amount {
-            font-size: 36px;
-            font-weight: 800;
-            color: #2E8B6F;
-            text-align: center;
-            margin: 20px 0;
-        }
-        .payment-details {
-            background: #F5F9F7;
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-        .payment-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #E2EFEA;
-        }
-        .payment-row:last-child {
-            border-bottom: none;
-        }
-        .modal {
+
+        .order-screen, .payment-screen, .success-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: #FFFFFF;
             z-index: 2000;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 24px 20px 40px;
+        }
+
+        .order-screen.active, .payment-screen.active, .success-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 2500;
             display: flex;
             align-items: center;
             justify-content: center;
-            display: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
-        .modal.active {
-            display: flex;
+
+        .loading-modal.active {
+            opacity: 1;
+            visibility: visible;
         }
-        .modal-content {
-            background: white;
-            border-radius: 40px;
-            padding: 32px;
+
+        .loading-card {
+            background: #FFFFFF;
+            border-radius: 48px;
+            padding: 32px 24px;
             text-align: center;
-            width: 260px;
+            max-width: 280px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
+
         .spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid #E2EFEA;
-            border-top-color: #2E8B6F;
+            width: 50px;
+            height: 50px;
+            border: 4px solid #E2F0EF;
+            border-top-color: #2A7F64;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 20px;
         }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .qr-img {
-            max-width: 180px;
-            margin: 16px auto;
-            display: block;
-            border-radius: 20px;
-            border: 2px solid #E2EFEA;
+
+        .loading-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1C4E3F;
+            margin-bottom: 8px;
         }
-        .toast {
+
+        .loading-subtext {
+            font-size: 0.7rem;
+            color: #8AB9B4;
+        }
+
+        .success-container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .success-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .success-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1C4E3F;
+        }
+
+        .close-success, .close-order, .close-payment {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #F3F9F9;
+            border: 1px solid #CEE7E5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            color: #2A7F64;
+        }
+
+        .success-card {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 32px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: #2A7F64;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .success-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: white;
+            stroke-width: 1.5;
+        }
+
+        .success-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #1C4E3F;
+            margin-bottom: 8px;
+        }
+
+        .success-subtitle {
+            font-size: 0.85rem;
+            color: #8AB9B4;
+            margin-bottom: 24px;
+        }
+
+        .phone-number-box {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid #D4EAE8;
+        }
+
+        .phone-number-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #8AB9B4;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .phone-number-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2A7F64;
+            letter-spacing: 1px;
+            font-family: monospace;
+        }
+
+        .qr-section {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid #D4EAE8;
+        }
+
+        .qr-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #8AB9B4;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        #qrcode img, #qrcode canvas {
+            width: 200px;
+            height: 200px;
+        }
+
+        .info-note {
+            background: #F0F7F6;
+            border-radius: 20px;
+            padding: 14px;
+            font-size: 0.7rem;
+            color: #2A7F64;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .order-header, .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .order-header h2, .payment-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1C4E3F;
+        }
+
+        .tariff-section, .phone-section, .email-section, .activation-section {
+            margin-bottom: 28px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8FB9B5;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .tariff-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tariff-option {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tariff-option.selected {
+            border-color: #2A7F64;
+            background: #F0F7F6;
+            box-shadow: 0 2px 8px rgba(42, 127, 100, 0.1);
+        }
+
+        .tariff-info {
+            text-align: left;
+        }
+
+        .tariff-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1C4E3F;
+            margin-bottom: 4px;
+        }
+
+        .tariff-desc {
+            font-size: 0.7rem;
+            color: #8AB9B4;
+        }
+
+        .tariff-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2A7F64;
+        }
+
+        .phone-card {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #F8FCFB;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .email-input:focus {
+            border-color: #2A7F64;
+            background: #FFFFFF;
+        }
+
+        .activation-section {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            padding: 16px 20px;
+        }
+
+        .activation-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1C4E3F;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .total-row:last-child {
+            margin-bottom: 0;
+            padding-top: 8px;
+            border-top: 1px solid #D4EAE8;
+            font-weight: 700;
+        }
+
+        .total-label {
+            font-size: 0.8rem;
+            color: #8AB9B4;
+        }
+
+        .total-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2A7F64;
+        }
+
+        .total-row:last-child .total-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1C4E3F;
+        }
+
+        .total-row:last-child .total-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2A7F64;
+        }
+
+        .crypto-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .crypto-option {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .crypto-option.selected {
+            border-color: #2A7F64;
+            background: #F0F7F6;
+        }
+
+        .crypto-name {
+            font-weight: 700;
+            color: #1C4E3F;
+        }
+
+        .crypto-amount {
+            font-weight: 800;
+            color: #2A7F64;
+        }
+
+        .crypto-details {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .address-box {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 12px;
+            margin: 12px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.8rem;
+            border: 1px solid #D4EAE8;
+        }
+
+        .btn-copy {
+            background: #E8F3F2;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #2A7F64;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .payment-status {
+            text-align: center;
+            padding: 16px;
+            border-radius: 24px;
+            margin-top: 16px;
+            font-weight: 500;
+        }
+
+        .payment-status.waiting {
+            background: #FFF3E0;
+            color: #E67E22;
+        }
+
+        .payment-status.paid {
+            background: #E0F7E8;
+            color: #2A7F64;
+        }
+
+        .payment-status.expired {
+            background: #FFE5E5;
+            color: #E74C3C;
+        }
+
+        .btn-confirm {
+            background: #2A7F64;
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border-radius: 100px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        .btn-confirm:active {
+            transform: scale(0.97);
+        }
+
+        .btn-confirm:disabled {
+            opacity: 0.5;
+            transform: none;
+        }
+
+        .toast-message {
             position: fixed;
             bottom: 30px;
             left: 50%;
-            transform: translateX(-50%);
-            background: #1E4A3A;
+            transform: translateX(-50%) scale(0.9);
+            background: #2A7F64;
             color: white;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 60px;
-            font-size: 13px;
+            font-size: 0.8rem;
+            font-weight: 500;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: all 0.2s ease;
             pointer-events: none;
             z-index: 3000;
             white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .toast.show {
+
+        .toast-message.show {
             opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .loading-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        .loading-spinner-small {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #E2F0EF;
+            border-top-color: #2A7F64;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
         }
     </style>
 </head>
 <body>
-<div class="app">
-    <div class="card">
-        <div class="logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 8v4l3 3"/>
-            </svg>
+    <div class="faith-container">
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="ru">RU</button>
+            <button class="lang-btn" data-lang="uk">UA</button>
         </div>
-        <h1>FS</h1>
-        <div class="sub">FAITH SERVICE</div>
+        <div class="esim-big">eSIM</div>
+        <div class="brand-block">
+            <div class="fs-logo">FS</div>
+            <div class="faith-service">Faith Service</div>
+        </div>
         <div class="divider"></div>
-        
-        <div class="support">
+        <div class="support-hours">
             <div class="support-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 8v4l3 3"/>
+                    <polyline points="12 6 12 12 16 14"/>
                 </svg>
             </div>
-            <div class="support-text">
-                <h4>Поддержка 24/7</h4>
-                <p>Ответ в течение 5 минут</p>
+            <div>
+                <span class="support-text" data-ru="Поддержка 24/7" data-uk="Підтримка 24/7">Поддержка 24/7</span>
+                <span class="support-sub" data-ru="Ответ в течение 5 минут" data-uk="Відповідь за 5 хвилин">Ответ в течение 5 минут</span>
+            </div>
+        </div>
+        <div class="buttons-group">
+            <button class="btn btn-primary" id="buyEsimBtn">
+                <span class="btn-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none"><path d="M4 4L20 12L4 20L8 12L4 4Z" /><line x1="8" y1="12" x2="20" y2="12" /></svg></span>
+                <span data-ru="Приобрести eSIM" data-uk="Придбати eSIM">Приобрести eSIM</span>
+            </button>
+            <a href="https://t.me/+K9MIqYiEfcI3ZDQy" target="_blank" class="btn btn-secondary">
+                <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg></span>
+                <span data-ru="Группа сервиса" data-uk="Група сервісу">Группа сервиса</span>
+            </a>
+            <button class="btn btn-share" id="shareBtn">
+                <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg></span>
+                <span data-ru="Поделиться приложением" data-uk="Поділитися застосунком">Поделиться приложением</span>
+            </button>
+        </div>
+        <div class="footer-note" data-ru="Продажа eSIM для GSM линий" data-uk="Продаж eSIM для GSM ліній">Продажа eSIM для GSM линий</div>
+    </div>
+
+    <!-- Окно выбора тарифа -->
+    <div id="orderScreen" class="order-screen">
+        <div class="order-header"><h2 data-ru="Оформление eSIM" data-uk="Оформлення eSIM">Оформление eSIM</h2><div class="close-order" id="closeOrderBtn">✕</div></div>
+        <div class="tariff-section"><div class="section-label" data-ru="ВЫБОР ТАРИФА" data-uk="ВИБІР ТАРИФУ">ВЫБОР ТАРИФА</div><div class="tariff-grid" id="tariffGrid">
+            <div class="tariff-option" data-tariff="Минимум" data-gb="1" data-minutes="0" data-price="100"><div class="tariff-info"><div class="tariff-name">Минимум</div><div class="tariff-desc">1 ГБ / 0 мин</div></div><div class="tariff-price">100 ₽</div></div>
+            <div class="tariff-option" data-tariff="Стандарт" data-gb="10" data-minutes="50" data-price="320"><div class="tariff-info"><div class="tariff-name">Стандарт</div><div class="tariff-desc">10 ГБ / 50 мин</div></div><div class="tariff-price">320 ₽</div></div>
+            <div class="tariff-option" data-tariff="Мировой" data-gb="0" data-minutes="200" data-price="600"><div class="tariff-info"><div class="tariff-name">Мировой</div><div class="tariff-desc">0 ГБ / 200 мин</div></div><div class="tariff-price">600 ₽</div></div>
+            <div class="tariff-option" data-tariff="Максимум" data-gb="1020" data-minutes="1000" data-price="1250"><div class="tariff-info"><div class="tariff-name">Максимум</div><div class="tariff-desc">1020 ГБ / 1000 мин</div></div><div class="tariff-price">1250 ₽</div></div>
+        </div></div>
+        <div class="phone-section"><div class="section-label" data-ru="НОМЕР ТЕЛЕФОНА" data-uk="НОМЕР ТЕЛЕФОНУ">НОМЕР ТЕЛЕФОНА</div><div class="phone-card"><span class="phone-label" data-ru="Номер" data-uk="Номер">Номер</span><span class="phone-value" data-ru="Бесплатно" data-uk="Безкоштовно">Бесплатно</span></div></div>
+        <div class="email-section"><div class="section-label" data-ru="ЭЛЕКТРОННАЯ ПОЧТА" data-uk="ЕЛЕКТРОННА ПОШТА">ЭЛЕКТРОННАЯ ПОЧТА</div><input type="email" id="emailInput" class="email-input" placeholder="your@email.com"></div>
+        <div class="activation-section"><div class="activation-title" data-ru="Активация eSIM" data-uk="Активація eSIM">Активация eSIM</div>
+            <div class="total-row"><span class="total-label" data-ru="Тариф" data-uk="Тариф">Тариф</span><span class="total-value" id="tariffPriceDisplay">100 ₽</span></div>
+            <div class="total-row"><span class="total-label" data-ru="Активация" data-uk="Активація">Активация</span><span class="total-value">200 ₽</span></div>
+            <div class="total-row"><span class="total-label" data-ru="ИТОГО" data-uk="РАЗОМ">ИТОГО</span><span class="total-value" id="totalPriceDisplay">300 ₽</span></div>
+        </div>
+        <button class="btn btn-primary" id="continueBtn"><span data-ru="Продолжить" data-uk="Продовжити">Продолжить</span></button>
+    </div>
+
+    <!-- Окно оплаты криптовалютой -->
+    <div id="paymentScreen" class="payment-screen">
+        <div class="payment-header"><h2 data-ru="Оплата криптовалютой" data-uk="Оплата криптовалютою">Оплата криптовалютой</h2><div class="close-payment" id="closePaymentBtn">✕</div></div>
+        <div class="section-label" data-ru="ВЫБЕРИТЕ КРИПТОВАЛЮТУ" data-uk="ВИБЕРІТЬ КРИПТОВАЛЮТУ">ВЫБЕРИТЕ КРИПТОВАЛЮТУ</div>
+        <div class="crypto-grid" id="cryptoGrid">
+            <div class="crypto-option" data-crypto="usdt_trc20" data-network="tron" data-symbol="USDT">
+                <span class="crypto-name">USDT (TRC20)</span>
+                <span class="crypto-amount" id="usdtAmount">~3.2 USDT</span>
+            </div>
+            <div class="crypto-option" data-crypto="usdt_bep20" data-network="bep20" data-symbol="USDT">
+                <span class="crypto-name">USDT (BEP20)</span>
+                <span class="crypto-amount" id="usdtBepAmount">~3.2 USDT</span>
+            </div>
+            <div class="crypto-option" data-crypto="btc" data-network="bitcoin" data-symbol="BTC">
+                <span class="crypto-name">BTC</span>
+                <span class="crypto-amount" id="btcAmount">~0.000048 BTC</span>
             </div>
         </div>
         
-        <div class="btn-group">
-            <button class="btn btn-primary" id="openOrderBtn">📱 Приобрести eSIM</button>
-            <a href="https://t.me/+K9MIqYiEfcI3ZDQy" target="_blank" class="btn btn-secondary" style="text-decoration: none;">💬 Группа сервиса</a>
-            <button class="btn btn-outline" id="shareBtn">🔗 Поделиться</button>
+        <div id="cryptoDetails" class="crypto-details" style="display: none;">
+            <div class="section-label" data-ru="РЕКВИЗИТЫ ДЛЯ ОПЛАТЫ" data-uk="РЕКВІЗИТИ ДЛЯ ОПЛАТИ">РЕКВИЗИТЫ ДЛЯ ОПЛАТЫ</div>
+            <div class="address-box" id="cryptoAddress"></div>
+            <button class="btn-copy" id="copyAddressBtn">📋 Копировать адрес</button>
+            <div class="payment-status waiting" id="paymentStatus">⏳ Ожидание оплаты...</div>
         </div>
-        <div class="footer">Продажа eSIM для GSM линий</div>
-    </div>
-</div>
-
-<!-- Экран заказа -->
-<div id="orderScreen" class="screen">
-    <div class="screen-header">
-        <h2>Оформление</h2>
-        <div class="close-btn" id="closeOrderBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
-    </div>
-    <div class="section-title">ВЫБОР ТАРИФА</div>
-    <div class="tariff-list" id="tariffList">
-        <div class="tariff-item" data-price="100" data-name="Минимум" data-gb="1" data-min="0"><div><div class="tariff-name">Минимум</div><div class="tariff-desc">1 ГБ / 0 мин</div></div><div class="tariff-price">100 ₽</div></div>
-        <div class="tariff-item" data-price="320" data-name="Стандарт" data-gb="10" data-min="50"><div><div class="tariff-name">Стандарт</div><div class="tariff-desc">10 ГБ / 50 мин</div></div><div class="tariff-price">320 ₽</div></div>
-        <div class="tariff-item" data-price="600" data-name="Мировой" data-gb="0" data-min="200"><div><div class="tariff-name">Мировой</div><div class="tariff-desc">0 ГБ / 200 мин</div></div><div class="tariff-price">600 ₽</div></div>
-        <div class="tariff-item" data-price="1250" data-name="Максимум" data-gb="1020" data-min="1000"><div><div class="tariff-name">Максимум</div><div class="tariff-desc">1020 ГБ / 1000 мин</div></div><div class="tariff-price">1250 ₽</div></div>
-    </div>
-    <div class="section-title">НОМЕР ТЕЛЕФОНА</div>
-    <div class="info-card"><span class="info-label">Номер</span><span class="info-value">Бесплатно</span></div>
-    <div class="section-title">ЭЛЕКТРОННАЯ ПОЧТА</div>
-    <input type="email" id="emailInput" class="input-field" placeholder="your@email.com">
-    <div class="total-box">
-        <div class="total-row"><span>Тариф</span><span id="tariffVal">100 ₽</span></div>
-        <div class="total-row"><span>Активация</span><span>200 ₽</span></div>
-        <div class="total-row border-top"><span>ИТОГО</span><span id="totalVal">300 ₽</span></div>
-    </div>
-    <button class="btn btn-primary" id="continueBtn">Продолжить</button>
-</div>
-
-<!-- Экран оплаты -->
-<div id="paymentScreen" class="screen">
-    <div class="screen-header"><h2>Оплата</h2><div class="close-btn" id="closePayBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
-    <div class="payment-amount" id="payAmount">0 ₽</div>
-    <div class="payment-details">
-        <div class="payment-row"><span>СБП</span><span>+7 999 123-45-67</span></div>
-        <div class="payment-row"><span>Получатель</span><span>Иван Иванов</span></div>
-        <div class="payment-row"><span>Банк</span><span>Т-Банк</span></div>
-    </div>
-    <button class="btn btn-primary" id="payBtn">Я оплатил</button>
-</div>
-
-<!-- Экран успеха -->
-<div id="successScreen" class="screen">
-    <div class="screen-header"><h2>Ваш eSIM</h2><div class="close-btn" id="closeSuccessBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
-    <div id="loadingDiv" style="text-align:center; padding: 40px;"><div class="spinner"></div><p style="margin-top:16px;">Ожидание eSIM...</p></div>
-    <div id="readyDiv" style="display:none; text-align:center;">
-        <img id="qrImg" class="qr-img">
-        <div class="total-box" style="margin-top:16px;"><div class="total-row"><span>Номер eSIM</span><span id="phoneSpan" style="color:#2E8B6F; font-weight:700;"></span></div></div>
-        <button class="btn btn-outline" id="refreshBtn" style="margin-top:12px;">Обновить</button>
-    </div>
-</div>
-
-<!-- Модалка -->
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <div class="spinner"></div>
-        <p>Ожидание подтверждения оплаты...</p>
-    </div>
-</div>
-
-<div id="toast" class="toast"></div>
-
-<script>
-    // SUPABASE
-    const supabaseUrl = 'https://domtiusbwjbxbfkygwvx.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvbXRpdXNid2pieGJma3lnd3Z4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTAxMjgsImV4cCI6MjA5MDUyNjEyOH0.GlYbpkx1tWUqJ2kwrOHFH5f7EaklBcuXHz8W0U-YGWg';
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-    
-    let currentOrderId = null;
-    let currentTariff = { price: 100, name: 'Минимум', gb: '1', min: '0' };
-    let interval = null;
-    
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2000);
-    }
-    
-    function genOrderNumber() {
-        return 'FS' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2,6).toUpperCase();
-    }
-    
-    function calcTotal(price) {
-        return Math.ceil((price + 200) * 1.09);
-    }
-    
-    // Создать заказ
-    async function createOrder(email) {
-        const total = calcTotal(currentTariff.price);
-        const { data, error } = await supabase
-            .from('orders')
-            .insert([{
-                order_number: genOrderNumber(),
-                tariff_name: currentTariff.name,
-                tariff_gb: currentTariff.gb,
-                tariff_minutes: currentTariff.min,
-                tariff_price: currentTariff.price,
-                activation_fee: 200,
-                total_amount: total,
-                email: email,
-                status: 'pending'
-            }])
-            .select()
-            .single();
         
-        if (error) {
-            console.error(error);
-            showToast('Ошибка: ' + error.message);
-            return null;
-        }
-        return data;
-    }
-    
-    // Получить заказ
-    async function getOrder(id) {
-        const { data, error } = await supabase.from('orders').select('*').eq('id', id).single();
-        if (error) return null;
-        return data;
-    }
-    
-    // Обновить статус
-    async function updateStatus(id, status) {
-        await supabase.from('orders').update({ status: status, updated_at: new Date() }).eq('id', id);
-    }
-    
-    // Проверка оплаты
-    function waitForPayment(orderId) {
-        if (interval) clearInterval(interval);
-        interval = setInterval(async () => {
-            const order = await getOrder(orderId);
-            if (order && order.status === 'paid') {
-                clearInterval(interval);
-                document.getElementById('modal').classList.remove('active');
-                showToast('✅ Оплата подтверждена!');
-                waitForEsim(orderId);
+        <button class="btn-confirm" id="checkPaymentBtn" style="display: none;">🔄 Проверить оплату</button>
+        <div class="payment-note" data-ru="После успешной оплаты eSIM автоматически сгенерируется и придет на почту" data-uk="Після успішної оплати eSIM автоматично згенерується та прийде на пошту">После успешной оплаты eSIM автоматически сгенерируется и придет на почту</div>
+    </div>
+
+    <!-- Модальное окно загрузки -->
+    <div id="loadingModal" class="loading-modal">
+        <div class="loading-card">
+            <div class="spinner"></div>
+            <div class="loading-text" data-ru="Формирование eSIM" data-uk="Формування eSIM">Формирование eSIM</div>
+            <div class="loading-subtext" data-ru="Пожалуйста, подождите..." data-uk="Будь ласка, зачекайте...">Пожалуйста, подождите...</div>
+        </div>
+    </div>
+
+    <!-- Экран успеха -->
+    <div id="successScreen" class="success-screen">
+        <div class="success-container">
+            <div class="success-header">
+                <h2 data-ru="eSIM активирован" data-uk="eSIM активовано">eSIM активирован</h2>
+                <div class="close-success" id="closeSuccessBtn">✕</div>
+            </div>
+            <div class="success-card">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="20 6 9 17 4 12" /></svg>
+                </div>
+                <div class="success-title" data-ru="Готово к установке" data-uk="Готово до встановлення">Готово к установке</div>
+                <div class="success-subtitle" data-ru="Отсканируйте QR-код в настройках eSIM" data-uk="Відскануйте QR-код у налаштуваннях eSIM">Отсканируйте QR-код в настройках eSIM</div>
+                <div class="phone-number-box">
+                    <div class="phone-number-label" data-ru="Ваш номер eSIM" data-uk="Ваш номер eSIM">Ваш номер eSIM</div>
+                    <div class="phone-number-value" id="esimPhoneNumber"></div>
+                </div>
+                <div class="qr-section">
+                    <div class="qr-label" data-ru="QR-код для активации" data-uk="QR-код для активації">QR-код для активации</div>
+                    <div id="qrcode"></div>
+                </div>
+                <div class="info-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#2A7F64" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span data-ru="Перейдите в Настройки → Сотовая связь → Добавить eSIM. Отсканируйте QR-код или введите данные вручную." data-uk="Перейдіть у Налаштування → Стільниковий зв'язок → Додати eSIM. Відскануйте QR-код або введіть дані вручну.">
+                        Перейдите в Настройки → Сотовая связь → Добавить eSIM. Отсканируйте QR-код или введите данные вручную.
+                    </span>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="doneBtn"><span data-ru="Отлично" data-uk="Добре">Отлично</span></button>
+        </div>
+    </div>
+
+    <div id="toastMessage" class="toast-message"></div>
+
+    <script>
+        (function() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                const tg = window.Telegram.WebApp;
+                tg.expand();
+                tg.enableClosingConfirmation();
+                tg.setBackgroundColor('#FFFFFF');
+                tg.setHeaderColor('bg_color');
+                tg.ready();
             }
-        }, 3000);
-    }
-    
-    // Проверка eSIM
-    function waitForEsim(orderId) {
-        if (interval) clearInterval(interval);
-        interval = setInterval(async () => {
-            const order = await getOrder(orderId);
-            if (order && order.status === 'completed' && order.qr_code && order.esim_phone) {
-                clearInterval(interval);
-                document.getElementById('loadingDiv').style.display = 'none';
-                document.getElementById('readyDiv').style.display = 'block';
-                document.getElementById('qrImg').src = order.qr_code;
-                document.getElementById('phoneSpan').textContent = order.esim_phone;
-                document.getElementById('successScreen').classList.add('active');
+
+            let currentLang = 'ru';
+            function setLanguage(lang) {
+                currentLang = lang;
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+                });
+                document.querySelectorAll('[data-ru][data-uk]').forEach(el => {
+                    el.textContent = lang === 'ru' ? el.getAttribute('data-ru') : el.getAttribute('data-uk');
+                });
             }
-        }, 3000);
-    }
-    
-    // ========== КНОПКИ ==========
-    document.getElementById('openOrderBtn').onclick = () => {
-        document.getElementById('orderScreen').classList.add('active');
-    };
-    
-    document.getElementById('closeOrderBtn').onclick = () => {
-        document.getElementById('orderScreen').classList.remove('active');
-    };
-    
-    document.getElementById('closePayBtn').onclick = () => {
-        document.getElementById('paymentScreen').classList.remove('active');
-    };
-    
-    document.getElementById('closeSuccessBtn').onclick = () => {
-        document.getElementById('successScreen').classList.remove('active');
-        document.getElementById('loadingDiv').style.display = 'block';
-        document.getElementById('readyDiv').style.display = 'none';
-    };
-    
-    document.getElementById('refreshBtn').onclick = async () => {
-        if (currentOrderId) {
-            const order = await getOrder(currentOrderId);
-            if (order && order.qr_code) {
-                document.getElementById('qrImg').src = order.qr_code;
-                document.getElementById('phoneSpan').textContent = order.esim_phone;
-                document.getElementById('loadingDiv').style.display = 'none';
-                document.getElementById('readyDiv').style.display = 'block';
-            } else {
-                showToast('eSIM еще не готов');
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => { const lang = btn.getAttribute('data-lang'); if (lang === 'ru' || lang === 'uk') setLanguage(lang); });
+            });
+            setLanguage('ru');
+            
+            const buyBtn = document.getElementById('buyEsimBtn');
+            const orderScreen = document.getElementById('orderScreen');
+            const paymentScreen = document.getElementById('paymentScreen');
+            const successScreen = document.getElementById('successScreen');
+            const loadingModal = document.getElementById('loadingModal');
+            const closeOrderBtn = document.getElementById('closeOrderBtn');
+            const closePaymentBtn = document.getElementById('closePaymentBtn');
+            const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+            const continueBtn = document.getElementById('continueBtn');
+            const doneBtn = document.getElementById('doneBtn');
+            const emailInput = document.getElementById('emailInput');
+            const toastEl = document.getElementById('toastMessage');
+            const tariffPriceDisplay = document.getElementById('tariffPriceDisplay');
+            const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+            const esimPhoneNumberSpan = document.getElementById('esimPhoneNumber');
+            
+            const ACTIVATION_FEE = 200;
+            let selectedTariff = { name: 'Минимум', price: 100 };
+            let currentEmail = '';
+            let currentOrderId = '';
+            let currentPaymentInterval = null;
+            
+            function showToast(message) {
+                toastEl.textContent = message;
+                toastEl.classList.add('show');
+                setTimeout(() => toastEl.classList.remove('show'), 2000);
             }
-        }
-    };
-    
-    // Выбор тарифа
-    document.querySelectorAll('.tariff-item').forEach(item => {
-        item.onclick = () => {
-            document.querySelectorAll('.tariff-item').forEach(i => i.classList.remove('selected'));
-            item.classList.add('selected');
-            currentTariff = {
-                price: parseInt(item.dataset.price),
-                name: item.dataset.name,
-                gb: item.dataset.gb,
-                min: item.dataset.min
-            };
-            document.getElementById('tariffVal').innerHTML = currentTariff.price + ' ₽';
-            document.getElementById('totalVal').innerHTML = (currentTariff.price + 200) + ' ₽';
-        };
-    });
-    document.querySelector('.tariff-item').classList.add('selected');
-    
-    // Продолжить
-    document.getElementById('continueBtn').onclick = async () => {
-        const email = document.getElementById('emailInput').value.trim();
-        if (!email || !email.includes('@')) {
-            showToast('Введите email');
-            return;
-        }
-        
-        const order = await createOrder(email);
-        if (!order) return;
-        
-        currentOrderId = order.id;
-        document.getElementById('payAmount').innerHTML = order.total_amount + ' ₽';
-        document.getElementById('orderScreen').classList.remove('active');
-        document.getElementById('paymentScreen').classList.add('active');
-    };
-    
-    // Я оплатил
-    document.getElementById('payBtn').onclick = async () => {
-        if (!currentOrderId) return;
-        await updateStatus(currentOrderId, 'pending');
-        document.getElementById('paymentScreen').classList.remove('active');
-        document.getElementById('modal').classList.add('active');
-        waitForPayment(currentOrderId);
-    };
-    
-    // Поделиться
-    document.getElementById('shareBtn').onclick = () => {
-        navigator.clipboard.writeText(window.location.href);
-        showToast('Ссылка скопирована');
-    };
-    
-    // Telegram
-    if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.expand();
-        window.Telegram.WebApp.ready();
-    }
-    
-    console.log('✅ Приложение загружено');
-</script>
+            
+            function updateTotalPrice() {
+                const total = selectedTariff.price + ACTIVATION_FEE;
+                tariffPriceDisplay.textContent = `${selectedTariff.price} ₽`;
+                totalPriceDisplay.textContent = `${total} ₽`;
+                
+                const usdtAmount = (total / 95).toFixed(2);
+                const btcAmount = (total / 6200000).toFixed(8);
+                document.getElementById('usdtAmount').textContent = `~${usdtAmount} USDT`;
+                document.getElementById('usdtBepAmount').textContent = `~${usdtAmount} USDT`;
+                document.getElementById('btcAmount').textContent = `~${btcAmount} BTC`;
+            }
+            
+            const tariffOptions = document.querySelectorAll('.tariff-option');
+            tariffOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    tariffOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedTariff = {
+                        name: option.getAttribute('data-tariff'),
+                        price: parseInt(option.getAttribute('data-price'))
+                    };
+                    updateTotalPrice();
+                });
+            });
+            if (tariffOptions.length) { tariffOptions[0].classList.add('selected'); updateTotalPrice(); }
+            
+            function generateRandomPhone() {
+                const prefix = '+7907';
+                const num = Math.floor(1000000 + Math.random() * 9000000).toString();
+                const formatted = num.replace(/(\d{3})(\d{2})(\d{2})/, '$1-$2-$3');
+                return `${prefix} ${formatted}`;
+            }
+            
+            function generateQRData() {
+                const smdp = 'smdp.faithesim.com';
+                const matchingId = 'FS' + Math.random().toString(36).substring(2, 12).toUpperCase();
+                return `LPA:1$${smdp}$${matchingId}`;
+            }
+            
+            function generateAndShowQR(qrText) {
+                const qrcodeDiv = document.getElementById('qrcode');
+                qrcodeDiv.innerHTML = '';
+                new QRCode(qrcodeDiv, {
+                    text: qrText,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#2A7F64",
+                    colorLight: "#FFFFFF",
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+            }
+            
+            // ============ NOWPAYMENTS ИНТЕГРАЦИЯ ============
+            const API_BASE_URL = 'https://faith-esim-backend.onrender.com/api'; // ЗАМЕНИТЬ НА СВОЙ URL ПОСЛЕ ДЕПЛОЯ
+            
+            document.querySelectorAll('.crypto-option').forEach(opt => {
+                opt.addEventListener('click', async () => {
+                    document.querySelectorAll('.crypto-option').forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    
+                    const totalAmount = selectedTariff.price + ACTIVATION_FEE;
+                    currentOrderId = 'order_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+                    
+                    try {
+                        loadingModal.classList.add('active');
+                        const response = await fetch(`${API_BASE_URL}/create-payment`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                amount: totalAmount,
+                                orderId: currentOrderId,
+                                email: currentEmail,
+                                tariff: selectedTariff
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        loadingModal.classList.remove('active');
+                        
+                        if (data.success) {
+                            document.getElementById('cryptoAddress').textContent = data.address;
+                            document.getElementById('cryptoDetails').style.display = 'block';
+                            document.getElementById('checkPaymentBtn').style.display = 'block';
+                            document.getElementById('paymentStatus').className = 'payment-status waiting';
+                            document.getElementById('paymentStatus').innerHTML = '⏳ Ожидание оплаты... Переведите указанную сумму на адрес выше';
+                            
+                            startPaymentCheck(currentOrderId);
+                        } else {
+                            showToast('Ошибка создания платежа: ' + (data.error || 'Попробуйте позже'));
+                        }
+                    } catch (error) {
+                        loadingModal.classList.remove('active');
+                        showToast('Ошибка подключения к серверу. Проверьте интернет.');
+                        console.error(error);
+                    }
+                });
+            });
+            
+            function startPaymentCheck(orderId) {
+                if (currentPaymentInterval) clearInterval(currentPaymentInterval);
+                
+                currentPaymentInterval = setInterval(async () => {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/check-payment`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ orderId: orderId })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success && data.status === 'paid') {
+                            clearInterval(currentPaymentInterval);
+                            currentPaymentInterval = null;
+                            
+                            document.getElementById('paymentStatus').className = 'payment-status paid';
+                            document.getElementById('paymentStatus').innerHTML = '✅ Оплата получена! Генерируем eSIM...';
+                            
+                            setTimeout(() => {
+                                loadingModal.classList.add('active');
+                                setTimeout(() => {
+                                    loadingModal.classList.remove('active');
+                                    paymentScreen.classList.remove('active');
+                                    
+                                    const phoneNumber = data.phoneNumber || generateRandomPhone();
+                                    const qrText = data.qrData || generateQRData();
+                                    
+                                    esimPhoneNumberSpan.textContent = phoneNumber;
+                                    generateAndShowQR(qrText);
+                                    successScreen.classList.add('active');
+                                    
+                                    showToast('✅ eSIM готов к активации!');
+                                }, 2000);
+                            }, 500);
+                        } else if (data.success && data.status === 'expired') {
+                            clearInterval(currentPaymentInterval);
+                            currentPaymentInterval = null;
+                            document.getElementById('paymentStatus').className = 'payment-status expired';
+                            document.getElementById('paymentStatus').innerHTML = '❌ Время оплаты истекло. Попробуйте снова.';
+                            document.getElementById('checkPaymentBtn').style.display = 'none';
+                        }
+                    } catch (error) {
+                        console.error('Check payment error:', error);
+                    }
+                }, 5000);
+            }
+            
+            document.getElementById('copyAddressBtn')?.addEventListener('click', () => {
+                const address = document.getElementById('cryptoAddress').textContent;
+                navigator.clipboard.writeText(address);
+                showToast('Адрес скопирован!');
+            });
+            
+            document.getElementById('checkPaymentBtn')?.addEventListener('click', () => {
+                if (currentOrderId) {
+                    showToast('Проверяем статус оплаты...');
+                }
+            });
+            
+            function openOrderScreen() { orderScreen.classList.add('active'); }
+            function closeOrderScreen() { orderScreen.classList.remove('active'); }
+            function closePaymentScreen() { 
+                paymentScreen.classList.remove('active');
+                if (currentPaymentInterval) clearInterval(currentPaymentInterval);
+                document.getElementById('cryptoDetails').style.display = 'none';
+                document.getElementById('checkPaymentBtn').style.display = 'none';
+            }
+            function closeSuccessScreen() { successScreen.classList.remove('active'); }
+            
+            buyBtn.addEventListener('click', openOrderScreen);
+            closeOrderBtn.addEventListener('click', closeOrderScreen);
+            closePaymentBtn.addEventListener('click', closePaymentScreen);
+            closeSuccessBtn.addEventListener('click', closeSuccessScreen);
+            doneBtn.addEventListener('click', closeSuccessScreen);
+            
+            continueBtn.addEventListener('click', () => {
+                const email = emailInput.value.trim();
+                if (!email) { showToast('Введите email'); return; }
+                if (!email.includes('@') || !email.includes('.')) { showToast('Введите корректный email'); return; }
+                currentEmail = email;
+                closeOrderScreen();
+                paymentScreen.classList.add('active');
+            });
+            
+            const shareBtn = document.getElementById('shareBtn');
+            async function handleShare() {
+                if (navigator.share) {
+                    try {
+                        await navigator.share({ title: 'Faith Service — eSIM', text: 'Приобретай eSIM в FS!', url: window.location.href });
+                        showToast('Спасибо, что делитесь!');
+                    } catch (err) { if (err.name !== 'AbortError') fallbackCopy(); }
+                } else { fallbackCopy(); }
+            }
+            function fallbackCopy() {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    showToast('Ссылка скопирована!');
+                }).catch(() => showToast('Не удалось скопировать'));
+            }
+            shareBtn.addEventListener('click', handleShare);
+        })();
+    </script>
 </body>
 </html>
