@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>Faith Service | eSIM активация</title>
+    <!-- Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- QRCode библиотека -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs2-fix@0.0.1/qrcode.min.js"></script>
     <style>
         * {
@@ -69,7 +72,6 @@
             color: #1C4E3F;
             margin-bottom: 20px;
             text-transform: uppercase;
-            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         }
 
         .brand-block {
@@ -166,7 +168,7 @@
             cursor: pointer;
             border: none;
             width: 100%;
-            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            font-family: inherit;
         }
 
         .btn-primary {
@@ -215,23 +217,11 @@
             height: 18px;
         }
 
-        .btn-primary .btn-icon svg {
-            stroke: white;
-            fill: none;
-        }
-
-        .btn-secondary .btn-icon svg,
-        .btn-share .btn-icon svg {
-            stroke: #2A7F64;
-            fill: none;
-        }
-
         .footer-note {
             margin-top: 28px;
             font-size: 0.65rem;
             font-weight: 450;
             color: #B8D1CF;
-            letter-spacing: 0.3px;
         }
 
         .order-screen, .payment-screen, .success-screen {
@@ -305,11 +295,6 @@
             font-weight: 600;
             color: #1C4E3F;
             margin-bottom: 8px;
-        }
-
-        .loading-subtext {
-            font-size: 0.7rem;
-            color: #8AB9B4;
         }
 
         .success-container {
@@ -431,11 +416,6 @@
             margin: 0 auto;
         }
 
-        #qrcode img, #qrcode canvas {
-            width: 200px;
-            height: 200px;
-        }
-
         .info-note {
             background: #F0F7F6;
             border-radius: 20px;
@@ -459,7 +439,7 @@
             color: #1C4E3F;
         }
 
-        .tariff-section, .phone-section, .email-section, .activation-section {
+        .tariff-section {
             margin-bottom: 28px;
         }
 
@@ -519,6 +499,10 @@
             color: #2A7F64;
         }
 
+        .phone-section {
+            margin-bottom: 28px;
+        }
+
         .phone-card {
             background: #F8FCFB;
             border: 1.5px solid #D4EAE8;
@@ -527,6 +511,25 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .phone-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1C4E3F;
+        }
+
+        .phone-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #2A7F64;
+            background: #E8F3F2;
+            padding: 4px 12px;
+            border-radius: 40px;
+        }
+
+        .email-section {
+            margin-bottom: 28px;
         }
 
         .email-input {
@@ -551,6 +554,7 @@
             border: 1.5px solid #D4EAE8;
             border-radius: 24px;
             padding: 16px 20px;
+            margin-bottom: 20px;
         }
 
         .activation-title {
@@ -598,113 +602,96 @@
             color: #2A7F64;
         }
 
-        .crypto-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .payment-card {
+            background: #F8FCFB;
+            border: 1.5px solid #D4EAE8;
+            border-radius: 28px;
+            padding: 24px;
             margin-bottom: 24px;
         }
 
-        .crypto-option {
-            background: #F8FCFB;
-            border: 1.5px solid #D4EAE8;
-            border-radius: 24px;
-            padding: 16px 20px;
+        .payment-row {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: all 0.2s;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #E2F0EF;
         }
 
-        .crypto-option.selected {
-            border-color: #2A7F64;
-            background: #F0F7F6;
+        .payment-row:last-child {
+            border-bottom: none;
         }
 
-        .crypto-name {
-            font-weight: 700;
-            color: #1C4E3F;
-        }
-
-        .crypto-amount {
-            font-weight: 800;
-            color: #2A7F64;
-        }
-
-        .crypto-details {
-            background: #F8FCFB;
-            border: 1.5px solid #D4EAE8;
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-
-        .address-box {
+        .payment-icon {
+            width: 44px;
+            height: 44px;
             background: #FFFFFF;
-            border-radius: 16px;
-            padding: 12px;
-            margin: 12px 0;
-            word-break: break-all;
-            font-family: monospace;
-            font-size: 0.8rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             border: 1px solid #D4EAE8;
         }
 
-        .btn-copy {
-            background: #E8F3F2;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #2A7F64;
-            cursor: pointer;
-            margin-top: 8px;
+        .payment-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: #2A7F64;
+            stroke-width: 1.6;
         }
 
-        .payment-status {
+        .payment-info {
+            flex: 1;
+        }
+
+        .payment-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #8AB9B4;
+            margin-bottom: 4px;
+        }
+
+        .payment-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1C4E3F;
+            letter-spacing: 0.3px;
+        }
+
+        .payment-amount {
+            background: #E8F3F2;
+            padding: 12px 20px;
+            border-radius: 60px;
             text-align: center;
-            padding: 16px;
-            border-radius: 24px;
-            margin-top: 16px;
+            margin: 20px 0;
+        }
+
+        .payment-amount span {
+            font-size: 0.85rem;
+            color: #2A7F64;
             font-weight: 500;
         }
 
-        .payment-status.waiting {
-            background: #FFF3E0;
-            color: #E67E22;
-        }
-
-        .payment-status.paid {
-            background: #E0F7E8;
+        .payment-amount .amount-value {
+            font-size: 1.8rem;
+            font-weight: 800;
             color: #2A7F64;
+            margin-left: 8px;
         }
 
-        .payment-status.expired {
-            background: #FFE5E5;
-            color: #E74C3C;
+        .payment-note {
+            font-size: 0.7rem;
+            color: #B8D1CF;
+            text-align: center;
+            margin-top: 20px;
         }
 
-        .btn-confirm {
+        .btn-continue, .btn-confirm, .btn-done {
             background: #2A7F64;
             color: white;
-            width: 100%;
-            padding: 14px;
-            border-radius: 100px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            margin-top: 16px;
-        }
-
-        .btn-confirm:active {
-            transform: scale(0.97);
-        }
-
-        .btn-confirm:disabled {
-            opacity: 0.5;
-            transform: none;
+            box-shadow: 0 6px 14px rgba(42, 127, 100, 0.2);
         }
 
         .toast-message {
@@ -725,28 +712,9 @@
             white-space: nowrap;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-
         .toast-message.show {
             opacity: 1;
             transform: translateX(-50%) scale(1);
-        }
-
-        .loading-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-        }
-
-        .loading-spinner-small {
-            width: 40px;
-            height: 40px;
-            border: 3px solid #E2F0EF;
-            border-top-color: #2A7F64;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 16px;
         }
     </style>
 </head>
@@ -807,336 +775,203 @@
             <div class="total-row"><span class="total-label" data-ru="Активация" data-uk="Активація">Активация</span><span class="total-value">200 ₽</span></div>
             <div class="total-row"><span class="total-label" data-ru="ИТОГО" data-uk="РАЗОМ">ИТОГО</span><span class="total-value" id="totalPriceDisplay">300 ₽</span></div>
         </div>
-        <button class="btn btn-primary" id="continueBtn"><span data-ru="Продолжить" data-uk="Продовжити">Продолжить</span></button>
+        <button class="btn btn-continue" id="continueBtn"><span data-ru="Продолжить" data-uk="Продовжити">Продолжить</span></button>
     </div>
 
-    <!-- Окно оплаты криптовалютой -->
+    <!-- Окно оплаты -->
     <div id="paymentScreen" class="payment-screen">
-        <div class="payment-header"><h2 data-ru="Оплата криптовалютой" data-uk="Оплата криптовалютою">Оплата криптовалютой</h2><div class="close-payment" id="closePaymentBtn">✕</div></div>
-        <div class="section-label" data-ru="ВЫБЕРИТЕ КРИПТОВАЛЮТУ" data-uk="ВИБЕРІТЬ КРИПТОВАЛЮТУ">ВЫБЕРИТЕ КРИПТОВАЛЮТУ</div>
-        <div class="crypto-grid" id="cryptoGrid">
-            <div class="crypto-option" data-crypto="usdt_trc20" data-network="tron" data-symbol="USDT">
-                <span class="crypto-name">USDT (TRC20)</span>
-                <span class="crypto-amount" id="usdtAmount">~3.2 USDT</span>
-            </div>
-            <div class="crypto-option" data-crypto="usdt_bep20" data-network="bep20" data-symbol="USDT">
-                <span class="crypto-name">USDT (BEP20)</span>
-                <span class="crypto-amount" id="usdtBepAmount">~3.2 USDT</span>
-            </div>
-            <div class="crypto-option" data-crypto="btc" data-network="bitcoin" data-symbol="BTC">
-                <span class="crypto-name">BTC</span>
-                <span class="crypto-amount" id="btcAmount">~0.000048 BTC</span>
-            </div>
+        <div class="payment-header"><h2 data-ru="Оплата" data-uk="Оплата">Оплата</h2><div class="close-payment" id="closePaymentBtn">✕</div></div>
+        <div class="payment-card">
+            <div class="payment-row"><div class="payment-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="5" width="20" height="14" rx="2" ry="2" /><line x1="2" y1="10" x2="22" y2="10" /></svg></div><div class="payment-info"><div class="payment-label" data-ru="Номер карты / счета" data-uk="Номер картки / рахунку">Номер карты / счета</div><div class="payment-value">89992223322</div></div></div>
+            <div class="payment-row"><div class="payment-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2" ry="2" /><line x1="1" y1="10" x2="23" y2="10" /><path d="M7 15h.01M16 15h.01" /></svg></div><div class="payment-info"><div class="payment-label" data-ru="Банк" data-uk="Банк">Банк</div><div class="payment-value">Т-Банк</div></div></div>
+            <div class="payment-row"><div class="payment-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg></div><div class="payment-info"><div class="payment-label" data-ru="Получатель" data-uk="Отримувач">Получатель</div><div class="payment-value">Ранис Л.</div></div></div>
         </div>
-        
-        <div id="cryptoDetails" class="crypto-details" style="display: none;">
-            <div class="section-label" data-ru="РЕКВИЗИТЫ ДЛЯ ОПЛАТЫ" data-uk="РЕКВІЗИТИ ДЛЯ ОПЛАТИ">РЕКВИЗИТЫ ДЛЯ ОПЛАТЫ</div>
-            <div class="address-box" id="cryptoAddress"></div>
-            <button class="btn-copy" id="copyAddressBtn">📋 Копировать адрес</button>
-            <div class="payment-status waiting" id="paymentStatus">⏳ Ожидание оплаты...</div>
-        </div>
-        
-        <button class="btn-confirm" id="checkPaymentBtn" style="display: none;">🔄 Проверить оплату</button>
-        <div class="payment-note" data-ru="После успешной оплаты eSIM автоматически сгенерируется и придет на почту" data-uk="Після успішної оплати eSIM автоматично згенерується та прийде на пошту">После успешной оплаты eSIM автоматически сгенерируется и придет на почту</div>
+        <div class="payment-amount"><span data-ru="Сумма к оплате" data-uk="Сума до оплати">Сумма к оплате</span><span class="amount-value" id="paymentAmount">300 ₽</span></div>
+        <button class="btn btn-confirm" id="confirmPaymentBtn"><span data-ru="Подтвердить оплату" data-uk="Підтвердити оплату">Подтвердить оплату</span></button>
+        <div class="payment-note" data-ru="После оплаты eSIM придет на указанную почту" data-uk="Після оплати eSIM прийде на вказану пошту">После оплаты eSIM придет на указанную почту</div>
     </div>
 
-    <!-- Модальное окно загрузки -->
     <div id="loadingModal" class="loading-modal">
         <div class="loading-card">
             <div class="spinner"></div>
-            <div class="loading-text" data-ru="Формирование eSIM" data-uk="Формування eSIM">Формирование eSIM</div>
+            <div class="loading-text" data-ru="Отправка заявки" data-uk="Відправка заявки">Отправка заявки</div>
             <div class="loading-subtext" data-ru="Пожалуйста, подождите..." data-uk="Будь ласка, зачекайте...">Пожалуйста, подождите...</div>
-        </div>
-    </div>
-
-    <!-- Экран успеха -->
-    <div id="successScreen" class="success-screen">
-        <div class="success-container">
-            <div class="success-header">
-                <h2 data-ru="eSIM активирован" data-uk="eSIM активовано">eSIM активирован</h2>
-                <div class="close-success" id="closeSuccessBtn">✕</div>
-            </div>
-            <div class="success-card">
-                <div class="success-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="20 6 9 17 4 12" /></svg>
-                </div>
-                <div class="success-title" data-ru="Готово к установке" data-uk="Готово до встановлення">Готово к установке</div>
-                <div class="success-subtitle" data-ru="Отсканируйте QR-код в настройках eSIM" data-uk="Відскануйте QR-код у налаштуваннях eSIM">Отсканируйте QR-код в настройках eSIM</div>
-                <div class="phone-number-box">
-                    <div class="phone-number-label" data-ru="Ваш номер eSIM" data-uk="Ваш номер eSIM">Ваш номер eSIM</div>
-                    <div class="phone-number-value" id="esimPhoneNumber"></div>
-                </div>
-                <div class="qr-section">
-                    <div class="qr-label" data-ru="QR-код для активации" data-uk="QR-код для активації">QR-код для активации</div>
-                    <div id="qrcode"></div>
-                </div>
-                <div class="info-note">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#2A7F64" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    <span data-ru="Перейдите в Настройки → Сотовая связь → Добавить eSIM. Отсканируйте QR-код или введите данные вручную." data-uk="Перейдіть у Налаштування → Стільниковий зв'язок → Додати eSIM. Відскануйте QR-код або введіть дані вручну.">
-                        Перейдите в Настройки → Сотовая связь → Добавить eSIM. Отсканируйте QR-код или введите данные вручную.
-                    </span>
-                </div>
-            </div>
-            <button class="btn btn-primary" id="doneBtn"><span data-ru="Отлично" data-uk="Добре">Отлично</span></button>
         </div>
     </div>
 
     <div id="toastMessage" class="toast-message"></div>
 
     <script>
-        (function() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                const tg = window.Telegram.WebApp;
-                tg.expand();
-                tg.enableClosingConfirmation();
-                tg.setBackgroundColor('#FFFFFF');
-                tg.setHeaderColor('bg_color');
-                tg.ready();
-            }
-
-            let currentLang = 'ru';
-            function setLanguage(lang) {
-                currentLang = lang;
-                document.querySelectorAll('.lang-btn').forEach(btn => {
-                    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-                });
-                document.querySelectorAll('[data-ru][data-uk]').forEach(el => {
-                    el.textContent = lang === 'ru' ? el.getAttribute('data-ru') : el.getAttribute('data-uk');
-                });
-            }
+        // Supabase config
+        const SUPABASE_URL = 'https://domtiusbwjbxbfkygwvx.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvbXRpdXNid2pieGJma3lnd3Z4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTAxMjgsImV4cCI6MjA5MDUyNjEyOH0.GlYbpkx1tWUqJ2kwrOHFH5f7EaklBcuXHz8W0U-YGWg';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let currentLang = 'ru';
+        let selectedTariff = { name: 'Минимум', gb: '1', minutes: '0', price: 100 };
+        const ACTIVATION_FEE = 200;
+        
+        // DOM elements
+        const buyBtn = document.getElementById('buyEsimBtn');
+        const orderScreen = document.getElementById('orderScreen');
+        const paymentScreen = document.getElementById('paymentScreen');
+        const loadingModal = document.getElementById('loadingModal');
+        const closeOrderBtn = document.getElementById('closeOrderBtn');
+        const closePaymentBtn = document.getElementById('closePaymentBtn');
+        const continueBtn = document.getElementById('continueBtn');
+        const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+        const emailInput = document.getElementById('emailInput');
+        const toastEl = document.getElementById('toastMessage');
+        const tariffPriceDisplay = document.getElementById('tariffPriceDisplay');
+        const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+        const paymentAmount = document.getElementById('paymentAmount');
+        
+        function showToast(message) {
+            toastEl.textContent = message;
+            toastEl.classList.add('show');
+            setTimeout(() => toastEl.classList.remove('show'), 3000);
+        }
+        
+        function updateTotalPrice() {
+            const total = selectedTariff.price + ACTIVATION_FEE;
+            tariffPriceDisplay.textContent = `${selectedTariff.price} ₽`;
+            totalPriceDisplay.textContent = `${total} ₽`;
+            if (paymentAmount) paymentAmount.textContent = `${total} ₽`;
+        }
+        
+        // Language switcher
+        function setLanguage(lang) {
+            currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.addEventListener('click', () => { const lang = btn.getAttribute('data-lang'); if (lang === 'ru' || lang === 'uk') setLanguage(lang); });
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
-            setLanguage('ru');
-            
-            const buyBtn = document.getElementById('buyEsimBtn');
-            const orderScreen = document.getElementById('orderScreen');
-            const paymentScreen = document.getElementById('paymentScreen');
-            const successScreen = document.getElementById('successScreen');
-            const loadingModal = document.getElementById('loadingModal');
-            const closeOrderBtn = document.getElementById('closeOrderBtn');
-            const closePaymentBtn = document.getElementById('closePaymentBtn');
-            const closeSuccessBtn = document.getElementById('closeSuccessBtn');
-            const continueBtn = document.getElementById('continueBtn');
-            const doneBtn = document.getElementById('doneBtn');
-            const emailInput = document.getElementById('emailInput');
-            const toastEl = document.getElementById('toastMessage');
-            const tariffPriceDisplay = document.getElementById('tariffPriceDisplay');
-            const totalPriceDisplay = document.getElementById('totalPriceDisplay');
-            const esimPhoneNumberSpan = document.getElementById('esimPhoneNumber');
-            
-            const ACTIVATION_FEE = 200;
-            let selectedTariff = { name: 'Минимум', price: 100 };
-            let currentEmail = '';
-            let currentOrderId = '';
-            let currentPaymentInterval = null;
-            
-            function showToast(message) {
-                toastEl.textContent = message;
-                toastEl.classList.add('show');
-                setTimeout(() => toastEl.classList.remove('show'), 2000);
-            }
-            
-            function updateTotalPrice() {
-                const total = selectedTariff.price + ACTIVATION_FEE;
-                tariffPriceDisplay.textContent = `${selectedTariff.price} ₽`;
-                totalPriceDisplay.textContent = `${total} ₽`;
-                
-                const usdtAmount = (total / 95).toFixed(2);
-                const btcAmount = (total / 6200000).toFixed(8);
-                document.getElementById('usdtAmount').textContent = `~${usdtAmount} USDT`;
-                document.getElementById('usdtBepAmount').textContent = `~${usdtAmount} USDT`;
-                document.getElementById('btcAmount').textContent = `~${btcAmount} BTC`;
-            }
-            
-            const tariffOptions = document.querySelectorAll('.tariff-option');
-            tariffOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    tariffOptions.forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedTariff = {
-                        name: option.getAttribute('data-tariff'),
-                        price: parseInt(option.getAttribute('data-price'))
-                    };
-                    updateTotalPrice();
-                });
+            document.querySelectorAll('[data-ru][data-uk]').forEach(el => {
+                el.textContent = lang === 'ru' ? el.getAttribute('data-ru') : el.getAttribute('data-uk');
             });
-            if (tariffOptions.length) { tariffOptions[0].classList.add('selected'); updateTotalPrice(); }
-            
-            function generateRandomPhone() {
-                const prefix = '+7907';
-                const num = Math.floor(1000000 + Math.random() * 9000000).toString();
-                const formatted = num.replace(/(\d{3})(\d{2})(\d{2})/, '$1-$2-$3');
-                return `${prefix} ${formatted}`;
-            }
-            
-            function generateQRData() {
-                const smdp = 'smdp.faithesim.com';
-                const matchingId = 'FS' + Math.random().toString(36).substring(2, 12).toUpperCase();
-                return `LPA:1$${smdp}$${matchingId}`;
-            }
-            
-            function generateAndShowQR(qrText) {
-                const qrcodeDiv = document.getElementById('qrcode');
-                qrcodeDiv.innerHTML = '';
-                new QRCode(qrcodeDiv, {
-                    text: qrText,
-                    width: 200,
-                    height: 200,
-                    colorDark: "#2A7F64",
-                    colorLight: "#FFFFFF",
-                    correctLevel: QRCode.CorrectLevel.M
-                });
-            }
-            
-            // ============ NOWPAYMENTS ИНТЕГРАЦИЯ ============
-            const API_BASE_URL = 'https://faith-esim-backend.onrender.com/api'; // ЗАМЕНИТЬ НА СВОЙ URL ПОСЛЕ ДЕПЛОЯ
-            
-            document.querySelectorAll('.crypto-option').forEach(opt => {
-                opt.addEventListener('click', async () => {
-                    document.querySelectorAll('.crypto-option').forEach(o => o.classList.remove('selected'));
-                    opt.classList.add('selected');
-                    
-                    const totalAmount = selectedTariff.price + ACTIVATION_FEE;
-                    currentOrderId = 'order_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-                    
-                    try {
-                        loadingModal.classList.add('active');
-                        const response = await fetch(`${API_BASE_URL}/create-payment`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                amount: totalAmount,
-                                orderId: currentOrderId,
-                                email: currentEmail,
-                                tariff: selectedTariff
-                            })
-                        });
-                        
-                        const data = await response.json();
-                        loadingModal.classList.remove('active');
-                        
-                        if (data.success) {
-                            document.getElementById('cryptoAddress').textContent = data.address;
-                            document.getElementById('cryptoDetails').style.display = 'block';
-                            document.getElementById('checkPaymentBtn').style.display = 'block';
-                            document.getElementById('paymentStatus').className = 'payment-status waiting';
-                            document.getElementById('paymentStatus').innerHTML = '⏳ Ожидание оплаты... Переведите указанную сумму на адрес выше';
-                            
-                            startPaymentCheck(currentOrderId);
-                        } else {
-                            showToast('Ошибка создания платежа: ' + (data.error || 'Попробуйте позже'));
-                        }
-                    } catch (error) {
-                        loadingModal.classList.remove('active');
-                        showToast('Ошибка подключения к серверу. Проверьте интернет.');
-                        console.error(error);
+            const emailInputEl = document.getElementById('emailInput');
+            if (emailInputEl) emailInputEl.placeholder = lang === 'ru' ? 'your@email.com' : 'your@email.com';
+        }
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => { const lang = btn.getAttribute('data-lang'); if (lang === 'ru' || lang === 'uk') setLanguage(lang); });
+        });
+        setLanguage('ru');
+        
+        // Tariff selection
+        const tariffOptions = document.querySelectorAll('.tariff-option');
+        tariffOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                tariffOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedTariff = {
+                    name: option.getAttribute('data-tariff'),
+                    gb: option.getAttribute('data-gb'),
+                    minutes: option.getAttribute('data-minutes'),
+                    price: parseInt(option.getAttribute('data-price'))
+                };
+                updateTotalPrice();
+            });
+        });
+        tariffOptions[0].classList.add('selected');
+        updateTotalPrice();
+        
+        // Screen navigation
+        function openOrderScreen() { orderScreen.classList.add('active'); }
+        function closeOrderScreen() { orderScreen.classList.remove('active'); }
+        function openPaymentScreen() { paymentScreen.classList.add('active'); }
+        function closePaymentScreen() { paymentScreen.classList.remove('active'); }
+        
+        buyBtn.addEventListener('click', openOrderScreen);
+        closeOrderBtn.addEventListener('click', closeOrderScreen);
+        closePaymentBtn.addEventListener('click', closePaymentScreen);
+        
+        // Create order in Supabase
+        async function createOrder(email, tariff, totalAmount) {
+            const { data, error } = await supabase
+                .from('orders')
+                .insert([
+                    {
+                        tariff_name: tariff.name,
+                        tariff_price: tariff.price,
+                        total_amount: totalAmount,
+                        email: email,
+                        status: 'pending'
                     }
-                });
-            });
+                ])
+                .select();
             
-            function startPaymentCheck(orderId) {
-                if (currentPaymentInterval) clearInterval(currentPaymentInterval);
+            if (error) {
+                console.error('Error creating order:', error);
+                throw error;
+            }
+            return data[0];
+        }
+        
+        continueBtn.addEventListener('click', async () => {
+            const email = emailInput.value.trim();
+            if (!email) {
+                showToast(currentLang === 'ru' ? 'Введите email' : 'Введіть email');
+                return;
+            }
+            if (!email.includes('@') || !email.includes('.')) {
+                showToast(currentLang === 'ru' ? 'Введите корректный email' : 'Введіть коректний email');
+                return;
+            }
+            
+            const total = selectedTariff.price + ACTIVATION_FEE;
+            
+            // Show loading
+            loadingModal.classList.add('active');
+            
+            try {
+                const order = await createOrder(email, selectedTariff, total);
+                console.log('Order created:', order);
                 
-                currentPaymentInterval = setInterval(async () => {
-                    try {
-                        const response = await fetch(`${API_BASE_URL}/check-payment`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ orderId: orderId })
-                        });
-                        
-                        const data = await response.json();
-                        
-                        if (data.success && data.status === 'paid') {
-                            clearInterval(currentPaymentInterval);
-                            currentPaymentInterval = null;
-                            
-                            document.getElementById('paymentStatus').className = 'payment-status paid';
-                            document.getElementById('paymentStatus').innerHTML = '✅ Оплата получена! Генерируем eSIM...';
-                            
-                            setTimeout(() => {
-                                loadingModal.classList.add('active');
-                                setTimeout(() => {
-                                    loadingModal.classList.remove('active');
-                                    paymentScreen.classList.remove('active');
-                                    
-                                    const phoneNumber = data.phoneNumber || generateRandomPhone();
-                                    const qrText = data.qrData || generateQRData();
-                                    
-                                    esimPhoneNumberSpan.textContent = phoneNumber;
-                                    generateAndShowQR(qrText);
-                                    successScreen.classList.add('active');
-                                    
-                                    showToast('✅ eSIM готов к активации!');
-                                }, 2000);
-                            }, 500);
-                        } else if (data.success && data.status === 'expired') {
-                            clearInterval(currentPaymentInterval);
-                            currentPaymentInterval = null;
-                            document.getElementById('paymentStatus').className = 'payment-status expired';
-                            document.getElementById('paymentStatus').innerHTML = '❌ Время оплаты истекло. Попробуйте снова.';
-                            document.getElementById('checkPaymentBtn').style.display = 'none';
-                        }
-                    } catch (error) {
-                        console.error('Check payment error:', error);
-                    }
-                }, 5000);
-            }
-            
-            document.getElementById('copyAddressBtn')?.addEventListener('click', () => {
-                const address = document.getElementById('cryptoAddress').textContent;
-                navigator.clipboard.writeText(address);
-                showToast('Адрес скопирован!');
-            });
-            
-            document.getElementById('checkPaymentBtn')?.addEventListener('click', () => {
-                if (currentOrderId) {
-                    showToast('Проверяем статус оплаты...');
-                }
-            });
-            
-            function openOrderScreen() { orderScreen.classList.add('active'); }
-            function closeOrderScreen() { orderScreen.classList.remove('active'); }
-            function closePaymentScreen() { 
-                paymentScreen.classList.remove('active');
-                if (currentPaymentInterval) clearInterval(currentPaymentInterval);
-                document.getElementById('cryptoDetails').style.display = 'none';
-                document.getElementById('checkPaymentBtn').style.display = 'none';
-            }
-            function closeSuccessScreen() { successScreen.classList.remove('active'); }
-            
-            buyBtn.addEventListener('click', openOrderScreen);
-            closeOrderBtn.addEventListener('click', closeOrderScreen);
-            closePaymentBtn.addEventListener('click', closePaymentScreen);
-            closeSuccessBtn.addEventListener('click', closeSuccessScreen);
-            doneBtn.addEventListener('click', closeSuccessScreen);
-            
-            continueBtn.addEventListener('click', () => {
-                const email = emailInput.value.trim();
-                if (!email) { showToast('Введите email'); return; }
-                if (!email.includes('@') || !email.includes('.')) { showToast('Введите корректный email'); return; }
-                currentEmail = email;
+                loadingModal.classList.remove('active');
                 closeOrderScreen();
-                paymentScreen.classList.add('active');
-            });
-            
-            const shareBtn = document.getElementById('shareBtn');
-            async function handleShare() {
-                if (navigator.share) {
-                    try {
-                        await navigator.share({ title: 'Faith Service — eSIM', text: 'Приобретай eSIM в FS!', url: window.location.href });
-                        showToast('Спасибо, что делитесь!');
-                    } catch (err) { if (err.name !== 'AbortError') fallbackCopy(); }
-                } else { fallbackCopy(); }
+                openPaymentScreen();
+                
+                showToast(currentLang === 'ru' ? 'Заявка создана, ожидайте подтверждения' : 'Заявку створено, очікуйте підтвердження');
+            } catch (error) {
+                loadingModal.classList.remove('active');
+                console.error('Failed to create order:', error);
+                showToast(currentLang === 'ru' ? 'Ошибка при создании заявки' : 'Помилка при створенні заявки');
             }
-            function fallbackCopy() {
-                navigator.clipboard.writeText(window.location.href).then(() => {
-                    showToast('Ссылка скопирована!');
-                }).catch(() => showToast('Не удалось скопировать'));
-            }
-            shareBtn.addEventListener('click', handleShare);
-        })();
+        });
+        
+        confirmPaymentBtn.addEventListener('click', async () => {
+            showToast(currentLang === 'ru' ? 'Заявка отправлена на проверку администратору' : 'Заявку надіслано на перевірку адміністратору');
+            closePaymentScreen();
+        });
+        
+        // Share functionality
+        const shareBtn = document.getElementById('shareBtn');
+        async function handleShare() {
+            const shareUrl = window.location.href;
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: 'Faith Service — eSIM', text: 'Приобретай eSIM в FS!', url: shareUrl });
+                    showToast(currentLang === 'ru' ? 'Спасибо, что делитесь!' : 'Дякуємо, що ділитесь!');
+                } catch (err) { if (err.name !== 'AbortError') fallbackCopy(); }
+            } else { fallbackCopy(); }
+        }
+        function fallbackCopy() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast(currentLang === 'ru' ? 'Ссылка скопирована!' : 'Посилання скопійовано!');
+            }).catch(() => showToast(currentLang === 'ru' ? 'Не удалось скопировать' : 'Не вдалося скопіювати'));
+        }
+        shareBtn.addEventListener('click', handleShare);
+        
+        // Telegram WebApp init
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            tg.expand();
+            tg.enableClosingConfirmation();
+            tg.setBackgroundColor('#FFFFFF');
+            tg.setHeaderColor('bg_color');
+            tg.ready();
+        }
     </script>
 </body>
 </html>
